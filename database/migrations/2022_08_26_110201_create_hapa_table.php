@@ -15,9 +15,14 @@ class CreateHapaTable extends Migration
     {
         Schema::create('hapa', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipu_hapa',['brood','nursery','srt']);
-            $table->float('luan');
-            $table->float('naruk');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_hapa');
+            $table->string('kolam_id');
+            $table->enum('tipu_hapa',['L','M','S'])->nullable();
+            $table->float('largura');
+            $table->float('comprimento');
+            $table->float('area');
             $table->float('altura');
             $table->float('volume');
             $table->enum('status',['Diak','Aat','Aatgrave','Manutensaun']);

@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Suco;
+use App\Models\Posto;
+use App\Models\Serie;
+use App\Models\Aldeia;
+use App\Models\Municipio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SucoController extends Controller
 {
@@ -23,7 +28,7 @@ class SucoController extends Controller
            
             Session::put('halaman_url', request()->fullUrl());
         }
-        return view('data_extra\suco\index', compact('data'));
+        return view('data_extra.suco.index', compact('data'));
     }
 
     /**
@@ -33,8 +38,24 @@ class SucoController extends Controller
      */
     public function create()
     {
-        return view('data_extra\suco\aumentasuco');
+        $dataposto = Posto::all();
+        $datamunicipio = Municipio::all();
+        $dataseries = Serie::all();
+        return view('data_extra\suco\aumentasuco', compact('dataposto','datamunicipio','dataseries'));
     }
+
+     //.......Posto.......
+     public function getPosto(Request $request){
+        $municipio_id = $request->municipio_id;
+        $postos = Posto::where('municipio_id', $municipio_id)->get();
+        $option = "<option > Hili... </option>";
+        foreach($postos as $postu ){
+            $option.= "<option value='$postu->id'>$postu->naran</option>";
+        }
+        echo $option;
+    }
+
+    
 
     /**
      * Store a newly created resource in storage.
@@ -45,7 +66,10 @@ class SucoController extends Controller
     public function store(Request $request)
     {
         Suco::create($request->all());
-        return Redirect()->route('indexsuco');
+        $dataposto = Posto::all();
+        $datamunicipio = Municipio::all();
+        $dataseries = Serie::all();
+        return redirect()->route('suco', compact('dataposto','datamunicipio','dataseries'))->with('success',' Dadus Konsegue Submete Ho Susesu! ');
     }
 
     /**
@@ -65,9 +89,13 @@ class SucoController extends Controller
      * @param  \App\Models\Suco  $suco
      * @return \Illuminate\Http\Response
      */
-    public function edit(Suco $suco)
+    public function edit($id)
     {
-        //
+        $data = Suco::find($id);
+        $datamunicipio = Municipio::all();
+        $dataposto = Posto::all();
+        $dataseries = Serie::all();
+        return view('data_extra\suco\edit', compact('data','datamunicipio','dataseries','dataposto'));
     }
 
     /**
@@ -77,9 +105,15 @@ class SucoController extends Controller
      * @param  \App\Models\Suco  $suco
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Suco $suco)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Suco::find($id);
+        $data->series_id = $request->input('series_id'); 
+        $data->municipio_id = $request->input('municipio_id');
+        $data->posto_id = $request->input('posto_id');
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('suco')->with('success',' Dadus Konsegue Retifika! ');
     }
 
     /**
@@ -88,8 +122,20 @@ class SucoController extends Controller
      * @param  \App\Models\Suco  $suco
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Suco $suco)
+    public function delete($id)
     {
-        //
+       $data = Suco::find($id);
+        $data->delete();
+        return redirect()->route('suco')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Suco::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_extra.suco.suco-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Suco.pdf"
+        );
     }
 }

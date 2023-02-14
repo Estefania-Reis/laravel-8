@@ -15,11 +15,18 @@ class CreateFohanikanTable extends Migration
     {
         Schema::create('fohanikan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('hahan_id');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_fohanikan');
+            $table->string('hahan_id');
+            $table->string('kolam_id');
             $table->time('oras_fo_han');
+            $table->float('qty');
+            $table->time('oras_fo_han2');
+            $table->float('qty2');
             $table->date('data_fo_han');
-            $table->float('kuantidade');
-            $table->foreignId('staff_id');
+            $table->float('total');
+            $table->string('staff_id');
             $table->timestamps();
         });
         Schema::rename('fohanikan', 'fohanikans');

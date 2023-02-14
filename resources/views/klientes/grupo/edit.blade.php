@@ -94,19 +94,19 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="foto" class="form-label">Foto</label>
+                                <label for="foto_kartaun" class="form-label">foto_kartaun</label>
                                 {{-- delete old img when upload new one --}}
-                                <input type="hidden" name="oldImage" value="{{ $data->foto }}">
+                                <input type="hidden" name="oldImage" value="{{ $data->foto_kartaun }}">
                             
-                                @if($data->foto)
-                                <img src="{{ asset('storage/fotoklientegrupo/'.$data->foto) }}" class="img-preview img-fluid mb-3 col-sm-3 d-block">
+                                @if($data->foto_kartaun)
+                                <img src="{{ asset('storage/foto_kartaunklientegrupo/'.$data->foto_kartaun) }}" class="img-preview img-fluid mb-3 col-sm-3 d-block">
                                 @else
                                 <img class="img-preview img-fluid mb-3 col-sm-3">
                                 @endif
                             
-                                <input class="form-control @error('foto') is-invalid @enderror" type="file" 
-                                id="foto" name="foto" onchange="previewImage()">
-                                @error('foto')
+                                <input class="form-control @error('foto_kartaun') is-invalid @enderror" type="file" 
+                                id="foto_kartaun" name="foto_kartaun" onchange="previewImage()">
+                                @error('foto_kartaun')
                                 <div class="invalid_feedback">
                                   {{ $message }}
                                 </div> 

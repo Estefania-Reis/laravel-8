@@ -15,10 +15,17 @@ class CreateIkankompradoTable extends Migration
     {
         Schema::create('ikankomprado', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lelaun_id');
-            $table->float('todan');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_ikankomprado');
+            $table->date('data');
+            $table->string('lelaun_id');
+            $table->integer('no_eleitoral')->nullable();
+            $table->integer('no_bi')->nullable();
+            $table->string('naran_kliente');
+            $table->float('peso');
             $table->float('presu');
-            $table->integer('kuantidade');
+            $table->float('total');
             $table->timestamps();
         });
         Schema::rename('ikankomprado', 'ikankomprados');

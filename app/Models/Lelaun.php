@@ -12,8 +12,17 @@ class Lelaun extends Model
     protected $guarded = [];
     protected $dates = ['created_at','updated_at'];
 
-    public function ikan()
-    {
-        return $this->belongsToMany(Ikan::class)->withTimestamps();
+   
+    public function series(){
+        return $this->belongsTo(Serie::class);
     }
+    
+    public static function boot()
+{
+    parent::boot();
+    static::creating(function($model){
+        $model->numeru = Lelaun::where('series_id', $model->series_id)->max('numeru') + 1;
+        $model->id_lelaun = $model->series['series'].'-'.str_pad($model->numeru, 2, '0',STR_PAD_LEFT);
+    });
+}
 }

@@ -24,4 +24,16 @@ class Klientegrupo extends Model
     public function municipio(){
         return $this->belongsTo(Municipio::class,'r_munisipio', 'id');
     }
+    public function series(){
+        return $this->belongsTo(Serie::class);
+    }
+    
+    public static function boot()
+{
+    parent::boot();
+    static::creating(function($model){
+        $model->numeru = Klientegrupo::where('series_id', $model->series_id)->max('numeru') + 1;
+        $model->id_klientegrupo = $model->series['series'].'-'.str_pad($model->numeru, 2, '0',STR_PAD_LEFT);
+    });
+}
 }

@@ -15,14 +15,24 @@ class CreateDistribuisaunTable extends Migration
     {
         Schema::create('distribuisaun', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('klienteIndividual_id');
-            $table->foreignId('klienteGrupo_id');
-            $table->integer('kuantidade_ikan_oan');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_distribuisaun');
+            $table->date('data');
+            $table->string('klienteIndividual_id')->nullable();
+            $table->string('klienteGrupo_id')->nullable();
+            $table->string('nursery_id');
+            $table->integer('total_m_sex');
+            $table->string('nurseryn_id');
+            $table->integer('total_n_sex');
+            $table->integer('total_ikan_oan');
             $table->string('objetivu');
-            $table->foreignId('aldeia_id');
-            $table->foreignId('suku_id');
-            $table->foreignId('postu_id');
-            $table->foreignId('munisipio_id');
+            $table->integer('total_kolam');
+            $table->integer('total_plastik');
+            $table->integer('total_ikanplastik');
+            $table->string('foto_kolam')->nullable();
+            $table->string('foto_eleitoral')->nullable();
+            $table->string('proposta')->nullable();
             $table->timestamps();
         });
         Schema::rename('distribuisaun', 'distribuisauns');

@@ -9,40 +9,36 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         {{-- selectpicker from bpootstrap 4 --}}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> --}}
 
 @endpush
 @section('content')
-<br>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
  
     <div class="container m-2 ">
-        <a href="/manutensaun/hapa/aumentadata" class="btn btn-success">Adisiona +</a>
+        
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
+            @can('tadmin')
+            <div class="col-auto ml-3">
+                <a href="/manutensaun/hapa/aumentadata" class="btn btn-info">Adisiona +</a>
             </div>
-
+            @endcan
             <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+                <a href="/export-hapa" class="btn btn-danger">Export PDF</a>
             </div>
-            <div class="col-auto">
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
+            <div class="col-auto mr-4">
+                <form action="/manutensaun/hapa/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
-
+            
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -83,14 +79,19 @@
                     <tr>
                         <th scope="col">#</th>
                         {{-- <th scope="col">Id</th> --}}
+                        <th scope="col">Id Hapa</th>
+                        <th scope="col">Id Kolam</th>
                         <th scope="col">Tipu Hapa</th>
-                        <th scope="col">Luan (m)</th>
-                        <th scope="col">Naruk (m)</th>
-                        <th scope="col">Altura Bee (m)</th>
-                        <th scope="col">Volume Bee (m kubiku)</th>
-                        <th scope="col">Status Hapa</th>
+                        <th scope="col">Comprimento (m)</th>
+                        <th scope="col">Largura (m)</th>
+                        <th scope="col">Area (m kuadradu)</th>
+                        <th scope="col">Altura (m)</th>
+                        <th scope="col">Volume (m kubiku)</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Observasaun</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -100,18 +101,23 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
+                        <td>{{ $row->id_hapa}}</td>
+                        <td>{{ $row->kolam1['id_kolam']}}</td>
                         <td>{{ $row->tipu_hapa}}</td>
-                        <td>{{ $row->luan}}</td>
-                        <td>{{ $row->naruk }}</td>
+                        <td>{{ $row->comprimento }}</td>
+                        <td>{{ $row->largura}}</td>
+                        <td>{{ $row->area }}</td>
                         <td>{{ $row->altura }}</td>
                         <td>{{ $row->volume }}</td>
                         <td>{{ $row->status }}</td>
                         <td>{{ $row->obs }}</td>
+                        @can('tadmin')
                         <td>
-                            <a href="/manutensaun/hapa/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete d-inline" data-id="{{ $row->id }}"
-                                ><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
+                            <a href="/manutensaun/hapa/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
+                                data-naran="{{ $row->id_incubator }}"><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
 
@@ -159,11 +165,12 @@
 <script>
     $('.delete').click(function () {
         var individualid = $(this).attr('data-id');
+        var individualid1 = $(this).attr('data-naran');
        // var naran = $(this).attr('data-naran');
 
         swal({
             title: "Iha Serteza ?",
-            text: "Ita sei hamos dadus refere ",
+            text: "Ita sei hamos dadus ho id " +individualid1 + " " ,
             icon: "warning",
             buttons: true,
             dangerMode: true,

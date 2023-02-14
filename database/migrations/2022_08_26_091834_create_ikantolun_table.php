@@ -15,12 +15,17 @@ class CreateIkantolunTable extends Migration
     {
         Schema::create('ikantolun', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ikan_id');
-            $table->float('pesu');
-            $table->string('unidade');
-            $table->foreignId('bee_id');
-            $table->foreignId('incubator_id');
-            $table->date('data');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_ikantolun');
+            $table->date('data_kolleta');
+            $table->string('ikan_id');
+            $table->string('kolam_id')->nullable();
+            $table->string('hapa_id')->nullable();
+            $table->string('staff_id');
+            $table->integer('total_ikan_F');
+            $table->integer('total_ikan_tolun');
+            $table->string('incubator_id')->nullable();
             $table->timestamps();
         });
         Schema::rename('ikantolun', 'ikantoluns');

@@ -1,122 +1,125 @@
 @extends('layout.admin')
-@push('css')
-      {{-- selectpicker from bpootstrap 4 --}}
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
- integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-@endpush
+
 @section('content')
 
 <body>
-<br>
-    <h1 class="text-center mb-3 mt-3">Adisiona Dadus</h1>
-    <div class="container mb-5">
+    <div class="content-wrapper mt-5">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-8">
+            <div class="col-auto">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size: 20px">
+                            <strong>Adisiona Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/insertdatakolam" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $data)
+                                            <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Tipu Kolam</label><br>
+                                    <select class="form-select" name="tipu_kolam" aria-label="Default select example">
+                                            <option selected value="-">hili</option>
+                                            <option value="kandidatu brood">kandidatu brood</option>
+                                            <option value="brood">brood</option>
+                                            <option value="nursery">nursery</option>
+                                            <option value="srt">srt</option>
+                                            <option value="nursery none mono sex">nursery none mono sex</option>
+                                    </select>
+                                </div>
                             <div class="form-group col-md-4">
-                                <label for="exampleInputEmail1" class="form-label">Luan/Largura (m)</label>
-                                <input type="text" name="luan" class="form-control" id="luan"
-                                    aria-describedby="emailHelp" value=0>
-                                    @error('luan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
+                                <label for="exampleInputEmail1" class="form-label">Funsionamentu</label>
+                                    <input type="text" name="funsionamentu" class="form-control" id="funsionamentu"
+                                        aria-describedby="emailHelp">
+                                        @error('funsionamentu')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="exampleInputEmail1" class="form-label">Naruk/Comprimento (m)</label>
-                                <input type="text" name="naruk" class="form-control" id="naruk"
-                                    aria-describedby="emailHelp" value=0>
-                                    @error('naruk')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="exampleInputEmail1" class="form-label">Aas/Altura Bee (m)</label>
-                                <input type="text" name="altura" class="form-control" id="altura"
-                                    aria-describedby="emailHelp" value=0>
-                                    @error('altura')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Volume Bee (m kubiku)</label>
-                                <input type="text" name="volume_bee" class="form-control" id="volume_bee"
-                                    aria-describedby="emailHelp" readonly>
-                                    {{-- @error('volume_bee')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror --}}
+                                <label for="exampleInputEmail1" class="form-label">Tekniku</label><br>
+                                <select class="form-select" name="employee_id" aria-label="Default select example">
+                                    @foreach ($dataemployee as $data)
+                                        <option selected value="{{ $data->id_employee }}">{{ $data->naran }}</option>
+                                    @endforeach
+                                </select>
                             </div> 
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tipu Kolam</label>
-                                <select class="form-select" name="tipu_kolam" aria-label="Default select example">
-                                    <option selected >Hili Tipu Kolam</option>
-                                    <option value="brood">brood</option>
-                                    <option value="nursery">nursery</option>
-                                    <option value="srt">srt</option>
-                                </select>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                  <label for="exampleInputEmail1" class="form-label">Status Hapa 1</label>
-                                  <select class="form-select" name="status_kolam" aria-label="Default select example">
-                                    <option selected>Hili Status Atual Hapa 1</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
-                                </div>
-                                <div class="form-group col-md-4">
-                                  <label for="exampleInputEmail1" class="form-label">Status Hapa 2</label>
-                                  <select class="form-select" name="status_kolam" aria-label="Default select example">
-                                    <option selected>Hili Status Atual Hapa 2</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="exampleInputEmail1" class="form-label">Status Hapa 3</label>
-                                    <select class="form-select" name="status_kolam" aria-label="Default select example">
-                                    <option selected>Hili Status Atual Hapa 3</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
-                                  </div>
-                              </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Status Kolam</label>
-                                <select class="form-select" name="status_kolam" aria-label="Default select example">
-                                    <option selected>Hili Status Atual Kolam</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Observasaun</label>
-                                <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Deskreve Kondisaun Status Kolam Nian">
-                                    @error('observasaun')
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Comprimento (m)</label>
+                                <input type="text" name="comprimento_kolam" class="form-control" id="comprimento_kolam"
+                                    aria-describedby="emailHelp" value=0>
+                                    @error('comprimento_kolam')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                             </div>
-                                         
-                            <button type="submit" class="btn btn-primary">Submete</button>
-                        </form>
+                        <div class="form-group col-md-4">
+                            <label for="exampleInputEmail1" class="form-label">Largura (m)</label>
+                            <input type="text" name="largura_kolam" class="form-control" id="largura_kolam"
+                                aria-describedby="emailHelp" value=0>
+                                @error('largura_kolam')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                        </div>
+                        
+                        <div class="form-group col-md-4">
+                            <label for="exampleInputEmail1" class="form-label">Area (m kuadradu)</label>
+                            <input type="text" name="area_kolam" class="form-control" id="area_kolam"
+                                aria-describedby="emailHelp" readonly>
+                                
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="exampleInputEmail1" class="form-label">Aas/Altura Bee (m)</label>
+                            <input type="text" name="altura_kolam" class="form-control" id="altura_kolam"
+                                aria-describedby="emailHelp" value=0>
+                                @error('altura_kolam')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="exampleInputEmail1" class="form-label">Volume Bee (m kubiku)</label>
+                            <input type="text" name="volume_kolam" class="form-control" id="volume_kolam"
+                                aria-describedby="emailHelp" readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="exampleInputEmail1" class="form-label">Status Kolam</label><br>
+                            <select class="form-select" name="status" aria-label="Default select example">
+                                <option selected>Hili</option>
+                                <option value="diak">diak</option>
+                                <option value="aat">aat</option>
+                                <option value="aatgrave">aat grave</option>
+                                <option value="manutensaun">manutensaun</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="exampleInputEmail1" class="form-label">Observasaun</label>
+                            <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp">
+                                @error('observasaun')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                        </div>  
+                            </div> 
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
+                            <button type="submit" class="btn btn-info">Submete</button>
+                        </div>            
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -138,38 +141,47 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script>
-    $(document).on('blur','#volume_bee', function(){
-        let luan = parseFloat($('#luan').val())
-        // let luan = parseInt($('#luan').val())
-        let naruk = parseFloat($('#naruk').val())
-        let altura = parseFloat($('#altura').val())
-        let rezultadu = luan * naruk * altura
-        $('#volume_bee').val(rezultadu)
+    $(document).on('blur','#area_kolam', function(){
+        let comprimento_kolam = parseFloat($('#comprimento_kolam').val())
+        let largura_kolam = parseFloat($('#largura_kolam').val())
+        let rezultadu = comprimento_kolam * largura_kolam
+        $('#area_kolam').val(rezultadu)
     })
-    $(document).on('blur','#naruk', function(){
-        let luan = parseFloat($('#luan').val())
-        let naruk = parseFloat($('#naruk').val())
-        let altura = parseFloat($('#altura').val())
-        let rezultadu = luan * naruk * altura
-        $('#volume_bee').val(rezultadu)
+    $(document).on('blur','#largura_kolam', function(){
+        let comprimento_kolam = parseFloat($('#comprimento_kolam').val())
+        let largura_kolam = parseFloat($('#largura_kolam').val())
+        let rezultadu = comprimento_kolam * largura_kolam 
+        $('#area_kolam').val(rezultadu)
     })
-    $(document).on('blur','#altura', function(){
-        let luan = parseFloat($('#luan').val())
-        let naruk = parseFloat($('#naruk').val())
-        let altura = parseFloat($('#altura').val())
-        let rezultadu = luan * naruk * altura
-        $('#volume_bee').val(rezultadu)
+    $(document).on('blur','#comprimento_kolam', function(){
+        let comprimento_kolam = parseFloat($('#comprimento_kolam').val())
+        let largura_kolam = parseFloat($('#largura_kolam').val())
+        let rezultadu = comprimento_kolam * largura_kolam
+        $('#area_kolam').val(rezultadu)
     })
-    $(document).on('blur','#luan', function(){
-            let luan = parseFloat($('#luan').val())
-            let naruk = parseFloat($('#naruk').val())
-            let altura = parseFloat($('#altura').val())
-            let rezultadu = luan * naruk * altura
-            $('#volume_bee').val(rezultadu)
-        })
+
+    $(document).on('blur','#volume_kolam', function(){
+        let area_kolam = parseFloat($('#area_kolam').val())
+        let altura_kolam = parseFloat($('#altura_kolam').val())
+        let rezultadu = area_kolam * altura_kolam 
+        $('#volume_kolam').val(rezultadu)
+    })
+
+    $(document).on('blur','#area_kolam', function(){
+        let area_kolam = parseFloat($('#area_kolam').val())
+        let altura_kolam = parseFloat($('#altura_kolam').val())
+        let rezultadu = area_kolam * altura_kolam
+        $('#volume_kolam').val(rezultadu)
+    })
+        
+    $(document).on('blur','#altura_kolam', function(){
+        let area_kolam = parseFloat($('#area_kolam').val())
+        let altura_kolam = parseFloat($('#altura_kolam').val())
+        let rezultadu = area_kolam * altura_kolam
+        $('#volume_kolam').val(rezultadu)
+    })
 
 </script>
-
 </body>
 
 @endsection

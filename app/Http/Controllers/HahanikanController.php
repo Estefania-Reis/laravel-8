@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hahanikan;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HahanikanController extends Controller
 {
@@ -34,7 +36,8 @@ class HahanikanController extends Controller
      */
     public function create()
     {
-        return view('rekursu\hahan_ikan\aumentadata');
+        $dataseries = Serie::all();
+        return view('rekursu\hahan_ikan\aumentadata', compact('dataseries'));
     }
 
     /**
@@ -47,7 +50,8 @@ class HahanikanController extends Controller
     {
         $data = Hahanikan::create($request->all());
         $data->save();
-        return redirect()->route('indexhahan')->with('success',' Dadus Submete Ho Sucesso! ');
+        $dataseries = Serie::all();
+        return view('rekursu\hahan_ikan\aumentadata', compact('dataseries'))->with('success',' Dadus Submete Ho Susesu! ');
     }
 
     /**
@@ -70,8 +74,10 @@ class HahanikanController extends Controller
     public function edit($id)
     {
         $data = Hahanikan::find($id);
+        $dataseries = Serie::all();
         return view('rekursu\hahan_ikan\edit', [
-            'data' => $data
+            'data' => $data,
+            'dataseries' => $dataseries
         ]);
 
     }
@@ -86,6 +92,7 @@ class HahanikanController extends Controller
     public function update(Request $request, $id)
     {
         $data = Hahanikan::find($id); 
+        $data->series_id = $request->input('series_id');
         $data->naran = $request->input('naran');
         $data->unidade = $request->input('unidade');
         $data->kuantidade = $request->input('kuantidade');
@@ -94,7 +101,7 @@ class HahanikanController extends Controller
         $data->data = $request->input('data');
         $data->data_hahan_expire = $request->input('data_hahan_expire');
         $data->update();
-        return redirect()->route('indexhahan')->with('success',' Dadus Konsegue Retifika! ');
+        return redirect()->route('fo-han')->with('success',' Dadus Konsegue Retifika! ');
     }
 
     /**
@@ -107,6 +114,16 @@ class HahanikanController extends Controller
     {
         $data = Hahanikan::find($id);
         $data->delete();
-        return redirect()->route('indexhahan')->with('success',' Dadus Konsege Hamos Ona!');
+        return redirect()->route('fo-han')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Hahanikan::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('rekursu.hahan_ikan.hahanIkan-pdf', $data->toArray())->setPaper('a4', 'landscape')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Hahan-Ikan.pdf"
+        );
     }
 }

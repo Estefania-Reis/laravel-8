@@ -13,26 +13,38 @@
                     <div class="card-body">
                         <form action="/updatedataincub/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Status Kondisaun Incubator</label>
+                            <div class="row">
+                                <div class="mb-3 mr-3 ml-3">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $datas)
+                                        @if (old('series_id', $data->series_id) == $datas->id)
+                                        <option selected value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @else
+                                        <option value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3 mr-3">
+                                <label for="exampleInputEmail1" class="form-label">Status Incubator</label><br>
                                 <select class="form-select" name="status" aria-label="Default select example">
-                                    <option selected> {{ $data->status }}</option>
+                                    <option selected value="{{ $data->status }}">{{ $data->status }}</option>
                                     <option value="Diak">Diak</option>
                                     <option value="Aat">Aat</option>
                                     <option value="Aatgrave">Aat Grave</option>
                                     <option value="Manutensaun">Manutensaun</option>
                                 </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Observasaun</label>
+                                    <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" value="{{ $data->observasaun }}">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Observasaun</label>
-                                <input type="text" name="observasaun" class="form-control" id="observasaun"
-                                    aria-describedby="emailHelp" value="{{ $data->observasaun }}">
-                                    @error('observasaun')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                                                                    
-                            <button type="submit" class="btn btn-primary">Submete</button>
+                            
+                                                  
+                            <button type="submit" class="btn btn-info">Submete</button>
                         </form>
                     </div>
                 </div>

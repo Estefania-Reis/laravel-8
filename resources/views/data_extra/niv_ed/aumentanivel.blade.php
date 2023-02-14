@@ -1,38 +1,53 @@
-@extends('../layout.admin')
+@extends('layout.admin')
 
 @section('content')
 
 <body>
-<br>
-<br>
-    <h1 class="text-center mb-5 mt-5">Aumenta Dadus Nivel Edukasaun</h1>
+    <div class="content-wrapper mt-5">
 
-    <div class="container mb-5">
+    <div class="container mb-2">
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size: 20px">
+                            <strong>Adisiona Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/insertdatanivel" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Nivel Edukasaun</label>
-                                <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
-                                    @error('naran')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
+                            <div class="row">
+                                <div class="mb-3 mr-2 col-3">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $data)
+                                            <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-7">
+                                    <label for="exampleInputEmail1" class="form-label">Nivel Edukasaun</label>
+                                    <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp">
+                                        @error('naran')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                </div>
                             </div>
-                            
-
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 
 

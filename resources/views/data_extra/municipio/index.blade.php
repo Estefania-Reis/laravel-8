@@ -9,26 +9,31 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
-<br>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
-    <div class="container m-2 ">
-        <a href="/data_extra/municipio/aumentamun" class="btn btn-success">Adisiona +</a>
+    <div class="container m-2">
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
+            
+            <div class="col-auto ml-3">
+                <a href="/data_extra/municipio/aumentamun" class="btn btn-info">Adisiona +</a>
             </div>
-
+           
             <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+                <a href="/data_extra/aldeia/index" class="btn btn-primary"><i class="nav-icon fas fa-arrow-circle-left"></i> Lokalizasaun</a>
             </div>
             <div class="col-auto">
+                <a href="/export-municipio" class="btn btn-danger">Export PDF</a>
+            </div>
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
+            </div>
+            <div class="col-auto mr-4">
+                <form action="/municipio" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -62,12 +67,13 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
-                        <th scope="col">Naran</th>
+                        <th scope="col">Id Municipio</th>
+                        <th scope="col">Municipio</th>
                         <th scope="col">Asaun</th>
                     </tr>
                 </thead>
@@ -78,13 +84,12 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
+                        <td>{{ $row->id_municipio }}</td>
                         <td>{{ $row->naran }}</td>
-                      
-                        <td>
-                            
-                            <a href="/data_extra/niv_ed/edit/{{ $row->id }}" class="btn btn-info">Edit</a>
-                            <a href="#" class="btn btn-danger delete" data-id="{{ $row->id }}"
-                                data-naran="{{ $row->naran }}">Delete</a>
+                        <td> 
+                            <a href="/municipio/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
+                            data-naran="{{ $row->naran }}"><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
                         </td>
                     </tr>
                     @endforeach
@@ -122,19 +127,19 @@
 </body>
 <script>
     $('.delete').click(function () {
-        var pegawaiid = $(this).attr('data-id');
+        var id = $(this).attr('data-id');
         var naran = $(this).attr('data-naran');
 
         swal({
             title: "Iha Serteza ?",
-            text: "Ita sei hamos dadus Nivel Edukasaun " + naran + " ",
+            text: "Ita sei hamos Municipio " + naran + " ",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    window.location = "/del/" + pegawaiid + ""
+                    window.location = "/delmun/" + id + ""
                     swal("Dadus konsege hamos ona", {
                         icon: "success",
                     });

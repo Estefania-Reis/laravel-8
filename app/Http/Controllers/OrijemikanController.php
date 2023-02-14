@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Orijemikan;
+use App\Models\Serie;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrijemikanController extends Controller
 {
@@ -12,7 +14,7 @@ class OrijemikanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexori()
+    public function index()
     {
         $data = Orijemikan::paginate('5');
         return view('data_extra\orijem\index',compact('data'));
@@ -25,7 +27,8 @@ class OrijemikanController extends Controller
      */
     public function create()
     {
-        return view('data_extra\orijem\aumentadata');
+        $dataseries = Serie::all();
+        return view('data_extra\orijem\aumentadata', compact('dataseries'));
     }
 
     /**
@@ -37,7 +40,8 @@ class OrijemikanController extends Controller
     public function store(Request $request)
     {
         Orijemikan::create($request->all());
-        return Redirect()->route('indexori');
+        $dataseries = Serie::all();
+        return view('data_extra\orijem\aumentadata', compact('dataseries'))->with('success',' Dadus Submete Ho Susesu! ');
     }
 
     /**
@@ -59,7 +63,9 @@ class OrijemikanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Orijemikan::find($id);
+        $dataseries = Serie::all();
+        return view('data_extra.orijem.edit', compact('data','dataseries'));
     }
 
     /**
@@ -71,7 +77,11 @@ class OrijemikanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Orijemikan::find($id);
+        $data->series_id = $request->input('series_id'); 
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('indexori')->with('success',' Dadus Konsegue Retifika! ');
     }
 
     /**
@@ -80,8 +90,20 @@ class OrijemikanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $data = Orijemikan::find($id);
+        $data->delete();
+        return redirect()->route('indexori')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Orijemikan::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_extra.orijem.orijem-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Orijem-Ikan.pdf"
+        );
     }
 }

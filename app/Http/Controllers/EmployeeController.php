@@ -2,29 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Serie;
+use App\Helpers\Helper;
 use App\Models\Employee;
+use App\Models\Religion;
 use Illuminate\Http\Request;
+use App\Models\Niveleducasaun;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
-use App\Models\Religion;
-use App\Models\Niveleducasaun;
-use Illuminate\Support\Facades\Redirect;
+use Barryvdh\DomPDF\Facade\Pdf;
+use PhpParser\Node\Stmt\ElseIf_;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Redirect;
 
-
-use App\Helpers\Helper;
 // use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class EmployeeController extends Controller
 {
     public function index(Request $request){
-
-        if($request->has('search')){
+            // $this->authorize('admin');
+         if($request->has('search')){
             $data = Employee::where('naran','LIKE','%' .$request->search.'%')->paginate(5);
             Session::put('halaman_url', request()->fullUrl());
         }else{
@@ -34,7 +36,7 @@ class EmployeeController extends Controller
         }
 
         
-        return view('datapegawai',compact('data'));
+        return view('employee.dataEmployee',compact('data'));
     }
 
     public function indexest(){
@@ -55,20 +57,20 @@ class EmployeeController extends Controller
         return view('estrutura', compact('data','data1','data2','data3','data4','data5','data6','data7','data8'));
     }
 
-    public function tambahpegawai(){
+    public function create(){
         $dataagama = Religion::all();
         $datanivel = Niveleducasaun::all();
-        return view('tambahdata',compact('dataagama','datanivel'));
+        $dataseries = Serie::all();
+        return view('employee.aumenta',compact('dataagama','datanivel','dataseries'));
     }
 
-    public function insertdata(Request $request){
+    public function store(Request $request){
         //dd($request->all());
         // $employee_id = Helper::IDgenerator(new Employee, 'employee_id', 5, 'FPA');
         $this->validate($request,[
-                'naran' => 'required|min:7|max:20',
+                'naran' => 'required|min:7',
                 'nmr_telefone' => 'required|min:7|max:8'
                  ]);
-
 
         $data = Employee::create($request->all());
         if($request->hasFile('foto')){
@@ -77,21 +79,23 @@ class EmployeeController extends Controller
             $data->save();
         }
         // $data->employee_id = $employee_id;
-        return redirect()->route('pegawai')->with('success',' Dadus Submete Ho Sucesso! ');
+        $dataagama = Religion::all();
+        $datanivel = Niveleducasaun::all();
+        $dataseries = Serie::all();
+        return redirect()->route('employee', compact('dataagama','datanivel','dataseries'))->with('success',' Dadus Konsegue Submete Ho Sucesso! ');
     }
 
-    public function tampilkandata($id){
-        
+    public function edit($id){
+        // $this->authorize($ability='update', $arguments = $employee);
         $data = Employee::find($id);
         //dd($data);
-        return view('tampildata', [
+        return view('employee.edit', [
             'data' => $data,
             'datanivel' => Niveleducasaun::all()
         ]);
     }
-
-    public function updatedataemp(Request $request, $id){
-        
+    public function update(Request $request, $id){
+        // $this->authorize($ability='update', $arguments = $employee);
         $data = Employee::find($id);
         $data->naran = $request->input('naran');
         $data->jeneru = $request->input('jeneru');
@@ -115,7 +119,7 @@ class EmployeeController extends Controller
         }
 
         $data->update();
-        return redirect()->route('pegawai')->with('success',' Dadus Konsegue Retifika! ');
+        return redirect()->route('employee')->with('success',' Dadus Konsegue Retifika! ');
 
     }
 
@@ -127,19 +131,22 @@ class EmployeeController extends Controller
         }  
 
         $data->delete();
-        return redirect()->route('pegawai')->with('success',' Dadus Konsege Hamos Ona!');
+        return redirect()->route('employee')->with('success',' Dadus Konsege Hamos Ona!');
     }
 
     public function exportpdf(){
         $data = Employee::all();
 
         view()->share('data', $data);
-        $pdf = Pdf::loadview('datapegawai-pdf', $data);
-        return $pdf->download('data.pdf');
+        $pdf = PDF::loadview('employee.dataEmployee-pdf', $data->toArray())->setPaper('a4', 'landscape')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "employee.pdf"
+        );
     }
 
     public function exportexcel(){
-        return Excel::download(new EmployeeExport, 'dadusFuncionario.xlsx');
+        return Excel::download(new EmployeeExport, 'employee.xlsx');
     }
 
     public function importexcel(Request $request){

@@ -11,10 +11,10 @@
             <div class="col-8">
                 <div class="card">
                     <div class="card-body">
-                        <form action="/updatedataniv/{{ $data->id }}" method="POST" enctype="multipart/form-data">
+                        <form action="/updatedatamun/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Nivel Edukasaun</label>
+                                <label for="exampleInputEmail1" class="form-label">Municipio</label>
                                 <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp" value="{{ $data->naran }}">
 

@@ -14,15 +14,33 @@ class Ikantolun extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $dates = ['data','created_at','updated_at'];
+    protected $dates = ['data_kolleta','created_at','updated_at'];
 
     public function ikan(){
-        return $this->belongsTo(Ikan::class, 'ikan_id', 'id');
+        return $this->belongsTo(Ikanbrood::class, 'ikan_id', 'id_ikanbrood');
     }
-    public function bee(){
-        return $this->belongsTo(Bee::class, 'bee_id', 'id');
+    public function employee(){
+        return $this->belongsTo(Employee::class, 'staff_id', 'id');
+    }
+    public function kolam(){
+        return $this->belongsTo(Kolam::class, 'kolam_id', 'id_kolam');
+    }
+    public function hapa(){
+        return $this->belongsTo(Hapa::class, 'hapa_id', 'id_hapa');
     }
     public function incubator(){
-        return $this->belongsTo(Incubator::class, 'incubator_id', 'id');
+        return $this->belongsTo(Incubator::class, 'incubator_id', 'id_incubator');
     }
+    public function series(){
+        return $this->belongsTo(Serie::class);
+    }
+    
+    public static function boot()
+{
+    parent::boot();
+    static::creating(function($model){
+        $model->numeru = Ikantolun::where('series_id', $model->series_id)->max('numeru') + 1;
+        $model->id_ikantolun = $model->series['series'].'-'.str_pad($model->numeru, 2, '0',STR_PAD_LEFT);
+    });
+}
 }

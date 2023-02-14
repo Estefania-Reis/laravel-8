@@ -12,29 +12,26 @@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="container m-2 ">
-        <a href="/operasaun/distribuisaun/aumentadata" class="btn btn-success">Adisiona +</a>
+    <div class="container m-2 "><br>
+        
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
-            </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+            <div class="col-auto ml-3">
+                @can('tadmin')
+                <a href="/operasaun/distribuisaun/aumentadata" class="btn btn-info">Adisiona +</a>
+                @endcan
             </div>
             <div class="col-auto">
+                <a href="/export-distribuisaun" class="btn btn-danger">Export PDF</a>
+            </div>
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
+            <div class="col-auto mr-4">
+                <form action="/operasaun/distribuisaun/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
 
             <!-- Modal -->
@@ -72,20 +69,25 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
-                        <th scope="col">Id Kliente Individual</th>
-                        <th scope="col">Id Kliente Grupo</th>
-                        <th scope="col">kuantidade Ikan Oan</th>
+                        <th scope="col">Id Distribuisaun</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Id Benefisiariu Individual</th>
+                        <th scope="col">Id Benefisiariu Grupo</th>
+                        <th scope="col">Total Ikan M. Sex</th>
+                        <th scope="col">Total Ikan N. M. Sex</th>
+                        <th scope="col">Total Ikan Oan</th>
                         <th scope="col">Objetivu</th>
-                        <th scope="col">Aldeia</th>
-                        <th scope="col">Suco</th>
-                        <th scope="col">Posto</th>
-                        <th scope="col">Municipio</th>
+                        <th scope="col">Total Kolam</th>
+                        <th scope="col">Total Plastik</th>
+                        <th scope="col">Total Ikan/Plastik</th>
+                        <th scope="col">Proposta</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -95,23 +97,37 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
-                        <td>{{ $row->klienteIndividual_id }}</td>
-                        <td>{{ $row->klienteGrupo_id }}</td>
-                        <td>{{ $row->kuantidade_ikan_oan }}</td>
+                        <td>{{ $row->id_distribuisaun }}</td>
+                        <td>{{ $row->data->format('j-n-Y')}}</td>
+                        @if ($row->klienteIndividual_id !== 0)
+                        <td>{{ $row->klienteind['id_kliente'] }}</td>
+                        @else
+                         <td> - </td>   
+                        @endif
+                        @if ($row->klienteGrupo_id !== 0)
+                        <td>{{ $row->klientegrupo['id_klientegrupo'] }}</td>
+                        @else
+                         <td> - </td>   
+                        @endif
+                        <td>{{ $row->total_m_sex }}</td>
+                        <td>{{ $row->total_n_sex }}</td>
+                        <td>{{ $row->total_ikan_oan}}</td>
                         <td>{{ $row->objetivu }}</td>
-                        <td>{{ $row->aldeia['naran']}}</td>
-                        <td>{{ $row->suco['narann'] }}</td>
-                        <td>{{ $row->posto['naran'] }}</td>
-                        <td>{{ $row->municipio['naran'] }}</td>
+                        <td>{{ $row->total_kolam }}</td>
+                        <td>{{ $row->total_plastik }}</td>
+                        <td>{{ $row->total_ikanplastik }}</td>
                         <td>
-                            <a href="/klientes/individual/edit/{{ $row->id }}" class="btn btn-info">Edit</a>
-                            <a href="#" class="btn btn-danger delete" data-id="{{ $row->id }}"
-                                data-naran="{{ $row->naran }}">Delete</a>
+                            <img src="{{ asset('storage/proposta/'.$row->proposta) }}" alt="proposta" style="width: 40px;" class="brand-image img-square elevation-3">
                         </td>
+                        @can('tadmin')
+                        <td>
+                            <a href="/operasaun/distribuisaun/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
+                                data-naran="{{ $row->id_distribuisaun }}"><i class="material-icons" style="font-size:18px">delete</i></a>
+                        </td>
+                        @endcan
                     </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
             {{ $data->links() }}
@@ -144,19 +160,19 @@
 </body>
 <script>
     $('.delete').click(function () {
-        var individualid = $(this).attr('data-id');
-        var naran = $(this).attr('data-naran');
+        var disid = $(this).attr('data-id');
+        var distid = $(this).attr('data-naran');
 
         swal({
             title: "Iha Serteza ?",
-            text: "Ita sei hamos dadus Staff ho naran " + naran + " ",
+            text: "Ita sei hamos dadus ho id " + distid + " ",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    window.location = "/delete/" + individualid + " ",
+                    window.location = "/deletedist/" + disid + " ",
                     swal("Dadus konsege hamos ona", {
                         icon: "success",
                     });

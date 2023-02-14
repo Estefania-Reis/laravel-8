@@ -7,11 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        {{-- selectpicker from bpootstrap 4 --}}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
 @endpush
 @section('content')
 
@@ -19,30 +14,25 @@
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
-        <a href="/manutensaun/kolam/aumentadata" class="btn btn-success">Adisiona +</a>
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
-            </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+            <div class="col-auto ml-3"> 
+                @can('tadmin')
+                <a href="/manutensaun/kolam/aumentadata" class="btn btn-info">Adisiona +</a>
+                @endcan
             </div>
             <div class="col-auto">
+                <a href="/export-kolam" class="btn btn-danger">Export PDF</a>
+            </div>
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
+            <div class="col-auto mr-4">
+                <form action="/manutensaun/kolam/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
-
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -75,22 +65,25 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         {{-- <th scope="col">Id</th> --}}
-                        <th scope="col">Luan (m)</th>
-                        <th scope="col">Naruk (m)</th>
-                        <th scope="col">Altura Bee (m)</th>
-                        <th scope="col">Volume Bee   (m kubiku)</th>
+                        <th scope="col">Id kolam</th>
                         <th scope="col">Tipu Kolam</th>
-                        <th scope="col">Status Hapa 1</th>
-                        <th scope="col">Status Hapa 2</th>
-                        <th scope="col">Status Hapa 3</th>
-                        <th scope="col">Status Kolam</th>
-                        <th scope="col">Obs</th>
+                        <th scope="col">Funsionamentu</th>
+                        <th scope="col">Tekniku</th>
+                        <th scope="col">Comprimento (m)</th>
+                        <th scope="col">Largura (m)</th>
+                        <th scope="col">Area (m kuadradu)</th>
+                        <th scope="col">Altura</th>
+                        <th scope="col">Volume (m kubiku)</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Observasaun</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -100,25 +93,26 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
-                        <td>{{ $row->luan}}</td>
-                        <td>{{ $row->naruk }}</td>
-                        <td>{{ $row->altura }}</td>
-                        <td>{{ $row->volume_bee }}</td>
-                        <td>{{ $row->tipu_kolam }}</td>
-                        <td>{{ $row->hapa1 }}</td>
-                        <td>{{ $row->hapa2 }}</td>
-                        <td>{{ $row->hapa3 }}</td>
-                        <td>{{ $row->status_kolam }}</td>
+                        <td>{{ $row->series['series']}}-{{ str_pad($row->numeru, 2, '0',STR_PAD_LEFT) }}</td>
+                        <td>{{ $row->tipu_kolam}}</td>
+                        <td>{{ $row->funsionamentu}}</td>
+                        <td>{{ $row->employee['naran'] }}</td>
+                        <td>{{ $row->comprimento_kolam }}</td>
+                        <td>{{ $row->largura_kolam }}</td>
+                        <td>{{ $row->area_kolam }}</td>
+                        <td>{{ $row->altura_kolam }}</td>
+                        <td>{{ $row->volume_kolam }}</td>
+                        <td>{{ $row->status }}</td>
                         <td>{{ $row->observasaun }}</td>
+                        @can('tadmin')
                         <td>
-                            <a href="/manutensaun/kolam/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete d-inline" data-id="{{ $row->id }}" data-naran="{{ $row->tipu_kolam }}"
-                                ><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
+                            <a href="/manutensaun/kolam/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}" data-naran="{{ $row->tipu_kolam }}"
+                                ><i class="material-icons" style="font-size:18px">delete</i></a>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
             {{ $data->links() }}

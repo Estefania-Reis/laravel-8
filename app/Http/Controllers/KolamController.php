@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Kolam;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KolamController extends Controller
 {
@@ -13,9 +17,16 @@ class KolamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexkolam()
+    public function indexkolam(Request $request)
     {
-        $data = Kolam::paginate('5');
+        if($request->has('search')){
+            $data = Kolam::where('kode_kolam','LIKE','%' .$request->search.'%')->paginate(5);
+            Session::put('halaman_url', request()->fullUrl());
+        }else{
+            $data = Kolam::paginate(5);
+           
+            Session::put('halaman_url', request()->fullUrl());
+        }
         return view('manutensaun\kolam\index',compact('data'));
     }
 
@@ -26,7 +37,9 @@ class KolamController extends Controller
      */
     public function create(Request $request)
     {
-        return view('manutensaun\kolam\aumentadata');
+        $dataemployee = Employee::all();
+        $dataseries = Serie::all();
+        return view('manutensaun\kolam\aumentadata', compact('dataemployee','dataseries'));
     }
 
     /**
@@ -39,7 +52,10 @@ class KolamController extends Controller
     public function store(Request $request)
     {
         Kolam::create($request->all());
-        return Redirect()->route('indexkolam');
+        $dataemployee = Employee::all();
+        $dataseries = Serie::all();
+        return redirect()->route('indexkolam', compact('dataemployee','dataseries'))->with('success',' Dadus Konsegue Submete ho Susesu. ');
+        // return view('manutensaun\kolam\aumentadata', compact('dataemployee','dataseries'))->with('success',' Dadus Submete Ho Susesu!');
     }
 
     /**
@@ -53,8 +69,6 @@ class KolamController extends Controller
        //
     }
 
-    
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -64,8 +78,10 @@ class KolamController extends Controller
     public function editkolam($id)
     {
         $data = Kolam::find($id);
+        $dataseries = Serie::all();
+        $dataemployee = Employee::all();
         //dd($data);
-        return view('manutensaun\kolam\edit',compact('data'));
+        return view('manutensaun\kolam\edit',compact('data','dataseries','dataemployee'));
     }
 
     /**
@@ -78,16 +94,18 @@ class KolamController extends Controller
     public function updatedatakolam(Request $request, $id)
     {
         $data = Kolam::find($id); 
-        $data->luan         = $request->input('luan');
-        $data->naruk        = $request->input('naruk');
-        $data->altura       = $request->input('altura');
-        $data->volume_bee   = $request->input('volume_bee');
-        $data->tipu_kolam   = $request->input('tipu_kolam');
-        $data->hapa1        = $request->input('hapa1');
-        $data->hapa2        = $request->input('hapa2');
-        $data->hapa3        = $request->input('hapa3');
-        $data->status_kolam = $request->input('status_kolam');
-        $data->observasaun  = $request->input('observasaun');
+        $data->series_id            = $request->input('series_id');
+        // $data->id_kolam          = $request->input('id_kolam');
+        $data->tipu_kolam           = $request->input('tipu_kolam');
+        $data->funsionamentu        = $request->input('funsionamentu');
+        $data->employee_id          = $request->input('employee_id');
+        $data->largura_kolam        = $request->input('largura_kolam');
+        $data->comprimento_kolam    = $request->input('comprimento_kolam');
+        $data->area_kolam           = $request->input('area_kolam');
+        $data->altura_kolam         = $request->input('altura_kolam');
+        $data->volume_kolam         = $request->input('volume_kolam');
+        $data->status               = $request->input('status');
+        $data->observasaun          = $request->input('observasaun');
         $data->update();
         return redirect()->route('indexkolam')->with('success',' Dadus Konsegue Retifika! ');
     }
@@ -103,5 +121,15 @@ class KolamController extends Controller
         $data = Kolam::find($id);
         $data->delete();
         return redirect()->route('indexkolam')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Kolam::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('manutensaun.kolam.kolam-pdf', $data->toArray())->setPaper('a4', 'landscape')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Kolam.pdf"
+        );
     }
 }

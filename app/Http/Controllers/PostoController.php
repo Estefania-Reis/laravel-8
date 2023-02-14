@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Municipio;
 use App\Models\Posto;
+use App\Models\Serie;
+use FontLib\Table\Type\post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PostoController extends Controller
 {
@@ -33,7 +37,9 @@ class PostoController extends Controller
      */
     public function create()
     {
-        return view('data_extra\posto\aumentaposto');
+        $datamunicipio = Municipio::all();
+        $dataseries = Serie::all();
+        return view('data_extra\posto\aumentaposto', compact('datamunicipio','dataseries'));
     }
 
     /**
@@ -45,7 +51,9 @@ class PostoController extends Controller
     public function store(Request $request)
     {
         Posto::create($request->all());
-        return redirect()->route('indexposto');
+        $datamunicipio = Municipio::all();
+        $dataseries = Serie::all();
+        return redirect()->route('posto', compact('datamunicipio','dataseries'))->with('success',' Dadus Konsegue Submete Ho Susesu! ');
     }
 
     /**
@@ -67,7 +75,10 @@ class PostoController extends Controller
      */
     public function edit(Posto $posto)
     {
-        //
+        $data = Posto::find($posto);
+        $datamunicipio = Municipio::all();
+        $dataseries = Serie::all();
+        return view('data_extra\posto\edit', compact('data','datamunicipio','dataseries'));
     }
 
     /**
@@ -77,9 +88,14 @@ class PostoController extends Controller
      * @param  \App\Models\Posto  $posto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Posto $posto)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Posto::find($id);
+        $data->series_id = $request->input('series_id'); 
+        $data->municipio_id = $request->input('municipio_id');
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('posto')->with('success',' Dadus Konsegue Retifika! ');
     }
 
     /**
@@ -88,8 +104,20 @@ class PostoController extends Controller
      * @param  \App\Models\Posto  $posto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Posto $posto)
+    public function delete($id)
     {
-        //
+        $data = Posto::find($id);
+        $data->delete();
+        return redirect()->route('posto')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Posto::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_extra.posto.posto-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Posto-Administrativo.pdf"
+        );
     }
 }

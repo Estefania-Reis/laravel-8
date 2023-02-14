@@ -15,11 +15,7 @@ class CreateTbkolamTable extends Migration
     {
         Schema::create('tbkolam', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id');
-            $table->foreignId('kolam_id');
-            $table->foreignId('bee_id');
-            $table->time('oras_tb');
-            $table->date('data_tb');
+            
             $table->timestamps();
         });
         Schema::rename('tbkolam', 'tbkolams');

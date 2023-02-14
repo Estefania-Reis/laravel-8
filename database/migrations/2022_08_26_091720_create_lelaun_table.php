@@ -15,8 +15,13 @@ class CreateLelaunTable extends Migration
     {
         Schema::create('lelaun', function (Blueprint $table) {
             $table->id();
-            $table->integer('kuantidade');
-            $table->date('data');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_lelaun');
+            $table->integer('total_ikan');
+            $table->float('presukg');
+            $table->date('data_loke_lelaun');
+            $table->date('data_remata_lelaun');
             $table->timestamps();
         });
         Schema::rename('lelaun', 'lelauns');

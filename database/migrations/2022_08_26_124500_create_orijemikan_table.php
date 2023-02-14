@@ -15,6 +15,9 @@ class CreateOrijemikanTable extends Migration
     {
         Schema::create('orijemikan', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_orijemikan');
             $table->string('naran');
             $table->timestamps();
         });

@@ -15,6 +15,11 @@ class CreateSucoTable extends Migration
     {
         Schema::create('suco', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_suco');
+            $table->string('municipio_id');
+            $table->string('posto_id');
             $table->string('naran');
             $table->timestamps();
         });

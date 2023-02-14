@@ -15,10 +15,16 @@ class CreateStockhahanTable extends Migration
     {
         Schema::create('stockhahan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('hahan_id');
-            $table->foreignId('fo_han_id');
-            $table->float('kuantidade_stock');
-            $table->date('date_stock_hotu');
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_stockhahan');
+            $table->date('data');
+            $table->string('hahan_id')->nullable();
+            $table->float('total_hahan')->nullable();
+            $table->string('fohan_id');
+            $table->float('total_fohan');
+            $table->float('total_stock')->nullable();
+            $table->float('subtotal_stock');
             $table->timestamps();
         });
         Schema::rename('stockhahan', 'stockhahans');

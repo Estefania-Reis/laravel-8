@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Hapa;
 use App\Models\Ikansrt;
 use App\Models\Kolam;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class IkansrtController extends Controller
 {
@@ -29,9 +31,21 @@ class IkansrtController extends Controller
     public function create()
     {
         $datakolam = DB::table('kolams')->where('tipu_kolam', 'srt')->get();
-        return view('data_ikan_srt\aumentadata', compact('datakolam'));
+        $datahapa = Hapa::all();
+        $dataseries = Serie::all();
+        return view('data_ikan_srt\aumentadata', compact('datakolam','datahapa','dataseries'));
     }
 
+     //.......Posto.......
+     public function getHapa(Request $request){
+        $kolam_id = $request->kolam_id;
+        $hapas = Hapa::where('kolam_id', $kolam_id)->get();
+        $option = "<option > Hili... </option>";
+        foreach($hapas as $hapa ){
+            $option.= "<option value='$hapa->id_hapa'>$hapa->id_hapa</option>";
+        }
+        echo $option;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -42,7 +56,7 @@ class IkansrtController extends Controller
     {
         $data = Ikansrt::create($request->all());
         $data->save();
-        return redirect()->route('ikansrt')->with('success',' Dadus Submete Ho Sucesso! ');
+        return redirect()->route('ikansrt')->with('success',' Dadus Konsegue Susesu! ');
     }
 
     /**
@@ -64,7 +78,14 @@ class IkansrtController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Ikansrt::find($id);
+        return view('data_ikan_srt\edit', [
+            'data' => $data,
+            'dataseries' => Serie::all(),
+            'datakolam' => Kolam::all(),
+            'datahapa' => Hapa::all()
+            
+        ]);
     }
 
     /**
@@ -76,7 +97,16 @@ class IkansrtController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        {
+            $data = Ikansrt::find($id); 
+            $data->series_id = $request->input('series_id');
+            $data->data_husik = $request->input('data_husik');
+            $data->kolam_id = $request->input('kolam_id');
+            $data->hapa_id = $request->input('hapa_id');
+            $data->total_ikan_srt = $request->input('total_ikan_srt');
+            $data->update();
+            return redirect()->route('ikansrt')->with('success',' Dadus Konsegue Retifika! ');
+        }
     }
 
     /**
@@ -85,8 +115,20 @@ class IkansrtController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $data = Ikansrt::find($id);
+        $data->delete();
+        return redirect()->route('ikansrt')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Ikansrt::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_ikan_srt.ikanSrt-pdf', $data->toArray())->setPaper('a4', 'landscape')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Ikan-SRT.pdf"
+        );
     }
 }

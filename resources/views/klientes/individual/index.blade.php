@@ -9,33 +9,30 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
-<br>
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
-        <a href="/klientes/individual/aumentadataindividual" class="btn btn-success">Adisiona +</a>
+        
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
+            <div class="col-auto ml-3">
+                
+                <a href="/klientes/individual/aumentadataindividual" class="btn btn-info">Adisiona +</a>
+                
+            </div> 
             <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
+                <a href="/export-benefisiariu-individual" class="btn btn-danger">Export PDF</a>
             </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
-            </div>
-            <div class="col-auto">
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
+            <div class="col-auto mr-4">
+                <form action="/klientes/individual/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
 
             <!-- Modal -->
@@ -73,11 +70,11 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
+                        <th scope="col">Id Kliente</th>
                         <th scope="col">Naran</th>
                         <th scope="col">Jeneru</th>
                         <th scope="col">Data Moris</th>
@@ -88,7 +85,9 @@
                         <th scope="col">Municipio</th>
                         <th scope="col">No telfone</th>
                         <th scope="col">Foto</th>
+                        
                         <th scope="col">Asaun</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -98,6 +97,7 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
+                        <td>{{ $row->id_kliente }}</td>
                         <td>{{ $row->naran }}</td>
                         <td>{{ $row->genero }}</td>
                         <td>{{ $row->data_moris }}</td>
@@ -110,11 +110,13 @@
                         <td>
                             <img src="{{ asset('storage/fotokliente/'.$row->foto) }}" alt="" style="width: 40px;" class="brand-image img-circle elevation-3">
                         </td>
+                        
                         <td>
-                            <a href="/klientes/individual/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete" data-id="{{ $row->id }}"
+                            <a href="/klientes/individual/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
                                 data-naran="{{ $row->naran }}"><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
                         </td>
+                        
                     </tr>
                     @endforeach
 

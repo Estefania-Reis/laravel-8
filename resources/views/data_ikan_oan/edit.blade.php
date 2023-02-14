@@ -3,111 +3,204 @@
 @section('content')
 
 <body>
-    <h1 class="text-center mb-4">Hadia Dadus</h1>
-
+    <div class="content-wrapper mt-5">
     <div class="container">
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size:20px">
+                            <strong>Hadia Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
-                    <form action="/insertdataioan/{{ $data->id }}" method="POST" enctype="multipart/form-data">
+                    <form action="/updatedataioan/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id Ikan Tolun</label>
-                                <select class="form-select" name="ikan_tolun_id" aria-label="Default select example">
-                                    @foreach ($datatipuikan as $dataikan)
-                                    @if(old('tipu_id', $data->tipu_id) == $dataikan->id)
-                                    <option value="{{ $dataikan->id }}" selected>{{ $dataikan->naran }}</option>
+                            <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                    @foreach ($dataseries as $datas)
+                                    @if (old('series_id', $data->series_id) == $datas->id)
+                                    <option selected value="{{ $datas->id }}">{{ $datas->series }}</option>
                                     @else
-                                    <option value="{{ $dataikan->id }}">{{ $dataikan->naran }}</option> 
+                                    <option  value="{{ $datas->id }}">{{ $datas->series }}</option>
                                     @endif
                                     @endforeach
                                 </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Jerasaun</label>
-                                <select class="form-select" name="jerasaun" aria-label="Default select example">
-                                    <option selected>{{ $data->jerasaun }}</option>
-                                    <option value="I">I</option>
-                                    <option value="II">II</option>
-                                    <option value="III">III</option>
-                                    <option value="IV">IV</option>
+                            </div> 
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Data</label>
+                                <input type="text" name="data" class="form-control" id="exampleInputEmail1"
+                                    aria-describedby="emailHelp" value="{{ date('j-n-Y', strtotime($data->data)) }}">
+                            </div> 
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Id Kolam Nursery</label><br>
+                                <select class="form-select" name="kolam_nursery_id" aria-label="Default select example">
+                                    @foreach ($datakolam as $datak)
+                                    @if (old('kolam_nursery_id', $data->kolam_nursery_id) == $datak->id_kolam)
+                                    <option selected value="{{ $datak->id_kolam }}">{{ $datak->id_kolam }}</option>
+                                    @else
+                                    <option  value="{{ $datak->id_kolam }}">{{ $datak->id_kolam }}</option>
+                                    @endif 
+                                    @endforeach
                                 </select>
                             </div>
-                           
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">kuantidade Ikan Aman</label>
-                                <input type="number" name="kuantidade_ikan_aman" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ $data->kuantidade_ikan_aman }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">kuantidade Ikan Inan</label>
-                                <input type="number" name="kuantidade_ikan_inan" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ $data->kuantidade_ikan_inan }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Orijem Ikan</label>
-                                <select class="form-select" name="orijem_id" aria-label="Default select example">
-                                    @foreach ($dataorijemikan as $dataori)
-                                    @if(old('orijem_id', $data->orijem_id) == $dataori->id)
-                                    <option value="{{ $dataori->id }}" selected>{{ $dataori->naran }}</option>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Id Hapa</label><br>
+                                <select class="form-select" name="hapa_id" aria-label="Default select example">
+                                    @foreach ($datahapa as $datah)
+                                    @if (old('hapa_id', $data->hapa_id) == $datah->id_hapa)
+                                    <option selected value="{{ $datah->id_hapa }}">{{ $datah->id_hapa }}</option>
                                     @else
-                                    <option value="{{ $dataori->id }}">{{ $dataori->naran }}</option> 
+                                    <option value="{{ $datah->id_hapa }}">{{ $datah->id_hapa }}</option>
                                     @endif
                                     @endforeach
                                 </select>
                             </div>  
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id Kolam</label>
-                                <select class="form-select" name="kolam_id" aria-label="Default select example">
-                                    @foreach ($datakolam as $datakol)
-                                    @if(old('kolam_id', $data->kolam_id) == $datakol->id)
-                                    <option value="{{ $datakol->id }}" selected>{{ $datakol->id }}</option>
-                                    @else
-                                    <option value="{{ $datakol->id }}">{{ $datakol->id }}</option> 
-                                    @endif
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Mono Sex</label><br>
+                                <input type="text" name="total_msex" class="form-control" id="total_msex"
+                                aria-describedby="emailHelp" value="{{ $data->total_msex }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total None Mono Sex</label><br>
+                                <input type="text" name="total_nmsex" class="form-control" id="total_nmsex"
+                                aria-describedby="emailHelp" value="{{ $data->total_nmsex }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Ikan Oan</label>
+                                <input type="text" name="total_ikan_oan" class="form-control" id="total_ikan_oan"
+                                aria-describedby="emailHelp" value="{{ $data->total_ikan_oan }}">
+                            </div> 
+                            <div class="form-group col-md-12">
+                                <hr>
+                                <div class="vertical-center">
+                                    <p>Adisiona Ikan Nursery</p>
+                                </div> 
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Mono Sex</label><br>
+                                <input type="text" name="total_msex_ad" class="form-control" id="total_msex_ad"
+                                aria-describedby="emailHelp" value="{{ $data->total_msex_ad }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total None Mono Sex</label><br>
+                                <input type="text" name="total_nmsex_ad" class="form-control" id="total_nmsex_ad"
+                                aria-describedby="emailHelp" value="{{ $data->total_nmsex_ad }}">
+                            </div> 
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Adisiona Ikan Nursery</label><br>
+                                <input type="text" name="total_ikan_nursery_adisiona" class="form-control" id="total_ikan_nursery_adisiona"
+                                aria-describedby="emailHelp" value="{{ $data->total_ikan_nursery_adisiona }}">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <hr>
+                                <div class="vertical-center">
+                                    <p>Diminuisaun Ikan Nursery</p>
+                                </div> 
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Tipu Diminuisaun</label> <br>
+                                <select name="tipu_dim" id="tipu_dim"><br>
+                                    <option value="{{ $data->tipu_dim }}" selected>{{ $data->tipu_dim }}</option>
+                                    <option value="distribui">distribui</option>
+                                    <option value="mate">mate</option>
+                                </select>
+                            </div> 
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Mono Sex</label><br>
+                                <input type="text" name="total_msex_dim" class="form-control" id="total_msex_dim"
+                                aria-describedby="emailHelp" value="{{ $data->total_msex_dim }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total None Mono Sex</label><br>
+                                <input type="text" name="total_nmsex_dim" class="form-control" id="total_nmsex_dim"
+                                aria-describedby="emailHelp" value="{{ $data->total_nmsex_dim }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Razaun Diminuisaun</label>
+                                <input type="text" name="razaun_dim" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp" value="{{ $data->razaun_dim }}">
+                            </div> 
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Total Diminuisaun</label>
+                                <input type="text" name="total_dim" class="form-control" id="total_dim"
+                                aria-describedby="emailHelp" value="{{ $data->total_dim }}">
+                            </div> 
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Id Kliente Individual</label><br>
+                                <select class="form-select" name="klienteIndividual_id" aria-label="Default select example">
+                                    <option selected value="0">Hili...</option>
+                                    @foreach ($dataklienteind as $data)
+                                        <option value="{{ $data->id_kliente }}">{{ $data->id_kliente }}</option>
                                     @endforeach
                                 </select>
                             </div> 
-                            
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id Hapa</label>
-                                <select class="form-select" name="hapa_id" aria-label="Default select example">
-                                    @foreach ($datahapa as $datah)
-                                    @if(old('hapa_id', $data->hapa_id) == $datah->id)
-                                    <option value="{{ $datah->id }}" selected>{{ $datah->id }}</option>
-                                    @else
-                                    <option value="{{ $datah->id }}">{{ $datah->id }}</option> 
-                                    @endif
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Id Kliente Grupo</label><br>
+                                <select class="form-select" name="klienteGrupo_id" aria-label="Default select example">
+                                    <option selected value="0">Hili...</option>
+                                    @foreach ($dataklientegp as $data)
+                                        <option value="{{ $data->id_klientegrupo }}">{{ $data->id_klientegrupo }}</option>
                                     @endforeach
                                 </select>
-                            </div> 
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Periodo Hahu Hakiak Ikan</label>
-                                <input type="text" name="periodo" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ date('j-n-Y ', strtotime($data->periodo)) }}"> 
-                              </div>
-
-                              <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Periodo Expire</label>
-                                <input type="text" name="periodo_expire" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ date('j-n-Y ', strtotime($data->periodo_expire)) }}"> 
-                              </div>
-
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Total Plastiku M. Sex</label>
+                                <input type="text" name="total_plastik_msex" class="form-control" id="total_plastik_msex"
+                                aria-describedby="emailHelp" value="{{ $data->total_plastik_msex }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Total Plastiku N. M. Sex</label>
+                                <input type="text" name="total_plastik_nmsex" class="form-control" id="total_plastik_nmsex"
+                                aria-describedby="emailHelp" value="{{ $data->total_plastik_nmsex }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Total Ikan/Plastiku M. Sex</label>
+                                <input type="text" name="total_ikanplastik_msex" class="form-control" id="total_ikanplastik_msex"
+                                aria-describedby="emailHelp" value="{{ $data->total_ikanplastik_msex }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Total Ikan/Plastiku N. M. Sex</label>
+                                <input type="text" name="total_ikanplastik_nmsex" class="form-control" id="total_ikanplastik_nmsex"
+                                aria-describedby="emailHelp" value="{{ $data->total_ikanplastik_nmsex }}">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <hr>
+                                <div class="vertical-center">
+                                    <p>Montante Ikan Nursery Atual</p>
+                                </div> 
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Mono Sex Atual</label><br>
+                                <input type="text" name="total_ikan_oan_msex_atual" class="form-control" id="total_ikan_oan_msex_atual"
+                                aria-describedby="emailHelp" value="{{ $data->total_ikan_oan_msex_atual }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total None Mono Sex Atual</label><br>
+                                <input type="text" name="total_ikan_oan_nmsex_atual" class="form-control" id="total_ikan_oan_nmsex_atual"
+                                aria-describedby="emailHelp" value="{{ $data->total_ikan_oan_nmsex_atual }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail" class="form-label">Total Ikan Oan Atual</label>
+                                <input type="text" name="total_ikan_oan_atual" class="form-control" id="total_ikan_oan_atual"
+                                aria-describedby="emailHelp" readonly value="{{ $data->total_ikan_oan_atual }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 
 
@@ -123,6 +216,151 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     -->
+
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {{-- Rejistu Dadus Ikan Nursery --}}
+    <script>
+        $(document).on('blur','#total_msex', function(){
+        let total_msex  = parseFloat($('#total_msex').val())
+        let total_nmsex   = parseFloat($('#total_nmsex').val())
+        let rezultadu       =  total_msex + total_nmsex 
+        $('#total_ikan_oan').val(rezultadu)
+    })
+    $(document).on('blur','#total_nmsex', function(){
+        let total_msex  = parseFloat($('#total_msex').val())
+        let total_nmsex   = parseFloat($('#total_nmsex').val())
+        let rezultadu       =  total_msex + total_nmsex 
+        $('#total_ikan_oan').val(rezultadu)
+    })    
+    </script>
+    {{-- Adisiona Dadus Ikan Nursery --}}
+    <script>
+        $(document).on('blur','#total_msex_ad', function(){
+        let total_msex_ad  = parseFloat($('#total_msex_ad').val())
+        let total_nmsex_ad   = parseFloat($('#total_nmsex_ad').val())
+        let rezultadu       =  total_msex_ad + total_nmsex_ad 
+        $('#total_ikan_nursery_adisiona').val(rezultadu)
+    })
+    $(document).on('blur','#total_nmsex_ad', function(){
+        let total_msex_ad  = parseFloat($('#total_msex_ad').val())
+        let total_nmsex_ad   = parseFloat($('#total_nmsex_ad').val())
+        let rezultadu       =  total_msex_ad + total_nmsex_ad 
+        $('#total_ikan_nursery_adisiona').val(rezultadu)
+    })    
+    </script>
+
+     {{-- Diminuisaun Dadus Ikan Nursery --}}
+     <script>
+        $(document).on('blur','#total_msex_dim', function(){
+        let total_msex_dim  = parseFloat($('#total_msex_dim').val())
+        let total_nmsex_dim   = parseFloat($('#total_nmsex_dim').val())
+        let rezultadu       =  total_msex_dim + total_nmsex_dim 
+        $('#total_dim').val(rezultadu)
+    })
+    $(document).on('blur','#total_nmsex_dim', function(){
+        let total_msex_dim  = parseFloat($('#total_msex_dim').val())
+        let total_nmsex_dim   = parseFloat($('#total_nmsex_dim').val())
+        let rezultadu       =  total_msex_dim + total_nmsex_dim 
+        $('#total_dim').val(rezultadu)
+    })    
+    </script>
+
+    {{-- kalkula ikan/plastiku msex --}}
+    <script>
+    $(document).on('blur','#total_msex_dim', function(){
+        let total_msex_dim   = parseFloat($('#total_msex_dim').val())
+        let total_plastik_msex  = parseFloat($('#total_plastik_msex').val())
+        let rezultadu       =  total_msex_dim / total_plastik_msex 
+        $('#total_ikanplastik_msex').val(rezultadu)
+    })
+    $(document).on('blur','#total_plastik_msex', function(){
+        let total_msex_dim   = parseFloat($('#total_msex_dim').val())
+        let total_plastik_msex  = parseFloat($('#total_plastik_msex').val())
+        let rezultadu       =  total_msex_dim / total_plastik_msex 
+        $('#total_ikanplastik_msex').val(rezultadu)
+    })
+    </script>
+    {{-- kalkula ikan/plastiku nmsex --}}
+    <script>
+        $(document).on('blur','#total_nmsex_dim', function(){
+            let total_nmsex_dim   = parseFloat($('#total_nmsex_dim').val())
+            let total_plastik_nmsex  = parseFloat($('#total_plastik_nmsex').val())
+            let rezultadu       =  total_nmsex_dim / total_plastik_nmsex 
+            $('#total_ikanplastik_nmsex').val(rezultadu)
+        })
+        $(document).on('blur','#total_plastik_nmsex', function(){
+            let total_nmsex_dim   = parseFloat($('#total_nmsex_dim').val())
+            let total_plastik_nmsex  = parseFloat($('#total_plastik_nmsex').val())
+            let rezultadu       =  total_nmsex_dim / total_plastik_nmsex 
+            $('#total_ikanplastik_nmsex').val(rezultadu)
+        })
+        </script>
+    
+    {{-- kalkula total ikan nursery msex atual  --}}
+    <script>
+        $(document).on('blur','#total_msex', function(){
+        let total_msex = parseFloat($('#total_msex').val())
+        let total_msex_ad = parseFloat($('#total_msex_ad').val())
+        let total_msex_dim = parseFloat($('#total_msex_dim').val())
+        let rezultadu =  total_msex + total_msex_ad - total_msex_dim
+        $('#total_ikan_oan_msex_atual').val(rezultadu)
+    })
+    $(document).on('blur','#total_msex_ad', function(){
+        let total_msex = parseFloat($('#total_msex').val())
+        let total_msex_ad = parseFloat($('#total_msex_ad').val())
+        let total_msex_dim = parseFloat($('#total_msex_dim').val())
+        let rezultadu =  total_msex + total_msex_ad - total_msex_dim
+        $('#total_ikan_oan_msex_atual').val(rezultadu)
+    })
+    $(document).on('blur','#total_msex_dim', function(){
+        let total_msex = parseFloat($('#total_msex').val())
+        let total_msex_ad = parseFloat($('#total_msex_ad').val())
+        let total_msex_dim = parseFloat($('#total_msex_dim').val())
+        let rezultadu =  total_msex + total_msex_ad - total_msex_dim
+        $('#total_ikan_oan_msex_atual').val(rezultadu)
+    })
+    </script>
+    {{-- kalkula total ikan nursery nmsex atual  --}}
+    <script>
+        $(document).on('blur','#total_nmsex', function(){
+        let total_nmsex = parseFloat($('#total_nmsex').val())
+        let total_nmsex_ad = parseFloat($('#total_nmsex_ad').val())
+        let total_nmsex_dim = parseFloat($('#total_nmsex_dim').val())
+        let rezultadu =  total_nmsex + total_nmsex_ad - total_nmsex_dim
+        $('#total_ikan_oan_nmsex_atual').val(rezultadu)
+    })
+    $(document).on('blur','#total_nmsex_ad', function(){
+        let total_nmsex = parseFloat($('#total_nmsex').val())
+        let total_nmsex_ad = parseFloat($('#total_nmsex_ad').val())
+        let total_nmsex_dim = parseFloat($('#total_nmsex_dim').val())
+        let rezultadu =  total_nmsex + total_nmsex_ad - total_nmsex_dim
+        $('#total_ikan_oan_nmsex_atual').val(rezultadu)
+    })
+    $(document).on('blur','#total_nmsex_dim', function(){
+        let total_nmsex = parseFloat($('#total_nmsex').val())
+        let total_nmsex_ad = parseFloat($('#total_nmsex_ad').val())
+        let total_nmsex_dim = parseFloat($('#total_nmsex_dim').val())
+        let rezultadu =  total_nmsex + total_nmsex_ad - total_nmsex_dim
+        $('#total_ikan_oan_nmsex_atual').val(rezultadu)
+    })
+    </script>
+     {{-- kalkula total ikan nursery atual --}}
+     <script>
+        $(document).on('blur','#total_ikan_oan_msex_atual', function(){
+            let total_ikan_oan_msex_atual   = parseFloat($('#total_ikan_oan_msex_atual').val())
+            let total_ikan_oan_nmsex_atual  = parseFloat($('#total_ikan_oan_nmsex_atual').val())
+            let rezultadu       =  total_ikan_oan_msex_atual + total_ikan_oan_nmsex_atual 
+            $('#total_ikan_oan_atual').val(rezultadu)
+        })
+        $(document).on('blur','#total_ikan_oan_nmsex_atual', function(){
+            let total_ikan_oan_msex_atual   = parseFloat($('#total_ikan_oan_msex_atual').val())
+            let total_ikan_oan_nmsex_atual  = parseFloat($('#total_ikan_oan_nmsex_atual').val())
+            let rezultadu       =  total_ikan_oan_msex_atual + total_ikan_oan_nmsex_atual 
+            $('#total_ikan_oan_atual').val(rezultadu)
+        })
+        </script>
 </body>
 
 @endsection

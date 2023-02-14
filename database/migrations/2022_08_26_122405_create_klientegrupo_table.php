@@ -15,15 +15,19 @@ class CreateKlientegrupoTable extends Migration
     {
         Schema::create('klientegrupo', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_klientegrupo');
             $table->string('naran');
             $table->string('chefe_grupo');
+            // $table->string('foto_kartaun');
+            $table->bigInteger('no_id_xefe'); 
             $table->enum('jeneru', ['M', 'F']);
             $table->string('r_aldeia');
             $table->string('r_suku');
             $table->string('r_postu');
             $table->string('r_munisipio');
             $table->integer('nmr_telfone');
-            $table->string('foto'); 
             $table->timestamps();   
         });
         Schema::rename('klientegrupo', 'klientegrupos');

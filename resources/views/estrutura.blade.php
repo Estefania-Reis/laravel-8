@@ -1,22 +1,19 @@
 @extends('layout.admin')
 {{-- local css style --}}
-<link href="/css/style.css"rel="stylesheet"type="text/css"/>
+
 @section('content')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-   <br>
-    <!-- /.content-header -->
 
     <!-- Main content -->
     <section class="content">
       <div class="container">
         <div class="row">
-          <h3 class="mt-3 text-center">Estrutura do Departamento da Representacao Territorial Pesca e Aquicultura Municipio Ermera</h3>
+          {{-- <h3 class="mt-3 text-center"><strong>Estrutura Funcionario Pescas e Aquicultura Centro Viveiros Gleno Ermera</strong> </h3> --}}
           <div class="tree">
             {{-- @foreach ($data as $index => $row) --}}
             <ul>
-              
-              <li> <a href="#">
+              <br>
+              <li class="a"> <a href="#">
                 @if ($data != null)
                   <img src="{{ asset('storage/fotopegawai/'.$data->foto) }}">
                 @else
@@ -134,18 +131,16 @@
           </ul>
         </li>
       </ul>
-      {{-- @endforeach --}}
     </div>
   </div>
   </div>
     </section>
-    <!-- /.content -->
   </div>
-
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+crossorigin="anonymous"></script>
   @endsection
-  @push('scripts')
+  
     
- <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
+ 

@@ -7,41 +7,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        {{-- selectpicker from bpootstrap 4 --}}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
 @endpush
 @section('content')
-<br>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
-        <a href="/rekursu/bee/aumentadata" class="btn btn-success">Adisiona +</a>
+        
+        
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
-            </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
-            </div>
-            <div class="col-auto">
-                <a href="/exportexcel" class="btn btn-success">Export Excel</a>
-            </div>
-
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
-            </div>
+            @can('tadmin')
+        <div class="col-auto ml-3">
+            <a href="/rekursu/bee/aumentadata" class="btn btn-info">Adisiona +</a>
+        </div>
+        @endcan
+        
+        <div class="col-auto">
+            <a href="/export-kualidade-bee" class="btn btn-danger">Export PDF</a>
+        </div>
+        <div class="col">
+            <a href="/exportexcel" class="btn btn-success">Export Excel</a>
+        </div>
+        
+        {{-- <div class="col-auto">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Import Data
+            </button>
+        </div> --}}
+        <div class="col-auto mr-4">
+            <form action="/bee" method="GET">
+                <input type="search" id="inputPassword6" name="search" class="form-control"
+                    aria-describedby="passwordHelpInline" placeholder="peskiza bazeia ba id">
+            </form>
+        </div>
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -69,18 +69,24 @@
             </div>
         </div>
         <div class="row m-2">
-            {{-- @if ($message = Session::get('success'))
-            <div class="alert alert-success" role="alert">
-                {{ $message }}
-            </div>
-            @endif --}}
-            <table class="table table-responsive-sm a">
+            <table class="table table-responsive-sm">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
+                        <th scope="col">Id Kualidade Bee</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Id Kolam</th>
+                        <th scope="col">Estatus Bee Dalan Tama</th>
+                        <th scope="col">Estatus Bee Dalan Sai</th>
+                        <th scope="col">Razaun</th>
+                        <th scope="col">PH</th>
+                        <th scope="col">Temp</th>
+                        <th scope="col">DO</th>
+                        <th scope="col">SD</th>
                         <th scope="col">Orijem Bee</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -90,25 +96,33 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
+                        <td>{{ $row->id_kualidadeBee}}</td>
+                        <td>{{ $row->data->format('j-n-Y')}}</td>
+                        <td>{{ $row->kolam_id}}</td>
+                        <td>{{ $row->status_bee_dalan_tama}}</td>
+                        <td>{{ $row->status_bee_dalan_sai}}</td>
+                        <td>{{ $row->razaun}}</td>
+                        <td>{{ $row->ph}}</td>
+                        <td>{{ $row->temperatura}}</td>
+                        <td>{{ $row->do}}</td>
+                        <td>{{ $row->sd}}</td>
                         <td>{{ $row->orijem_bee}}</td>
+                        @can('tadmin')
                         <td>
-                            <a href="/rekursu/bee/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete d-inline" data-id="{{ $row->id }}"
-                                data-naran="{{ $row->orijem_bee }}">
+                            <a href="/rekursu/bee/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete d-inline" data-id="{{ $row->id }}"
+                                data-naran="{{ $row->id_kualidadeBee }}">
                                 <i class="material-icons d-inline" style="font-size:18px">delete</i></a>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
             {{ $data->links() }}
         </div>
     </div>
-
 </div>
-
  
 @endsection
 
@@ -143,19 +157,19 @@
 </body>
 <script>
     $('.delete').click(function () {
-        var individualid = $(this).attr('data-id');
+        var id = $(this).attr('data-id');
         var naran = $(this).attr('data-naran');
 
         swal({
             title: "Iha Serteza ?",
-            text: "Ita sei hamos dadus Orijem Bee "+ naran + " ",
+            text: "Ita sei hamos dadus ho id "+ naran + " ",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    window.location = "/delbee/" + individualid + " ",
+                    window.location = "/delbee/" + id + " ",
                     swal("Dadus konsege hamos ona", {
                         icon: "success",
                     });

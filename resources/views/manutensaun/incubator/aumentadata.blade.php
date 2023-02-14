@@ -1,24 +1,28 @@
 @extends('layout.admin')
-@push('css')
-      {{-- selectpicker from bpootstrap 4 --}}
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
- integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-@endpush
+
 @section('content')
 
 <body>
-<br>
-    <h1 class="text-center mb-3 mt-5">Adisiona Dadus</h1>
-    <div class="container mb-5">
+    <div class="content-wrapper">
+    <h1 class="text-center mb-3 mt-2">Adisiona Dadus</h1>
+    <div class="container mb-2">
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
                     <div class="card-body">
                         <form action="/insertdataincub" method="POST" enctype="multipart/form-data">
                             @csrf
-                        
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Status Incubator</label>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $data)
+                                            <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Status Incubator</label><br>
                                 <select class="form-select" name="status" aria-label="Default select example">
                                     <option selected>Hili Status Atual Incubator</option>
                                     <option value="Diak">Diak</option>
@@ -26,23 +30,26 @@
                                     <option value="Aatgrave">Aat Grave</option>
                                     <option value="Manutensaun">Manutensaun</option>
                                 </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="exampleInputEmail1" class="form-label">Observasaun</label>
+                                    <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" placeholder="Deskreve Kondisaun Status Incubator Nian">
+                                        @error('observasaun')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Observasaun</label>
-                                <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Deskreve Kondisaun Status Incubator Nian">
-                                    @error('observasaun')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                                                  
-                            <button type="submit" class="btn btn-primary">Submete</button>
+                            <div class="vertical-center">
+                                <button type="submit" class="btn btn-info">Submete</button>
+                            </div>                    
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

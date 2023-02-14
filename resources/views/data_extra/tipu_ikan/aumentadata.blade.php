@@ -10,7 +10,15 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="/insertdatatipu" method="POST" enctype="multipart/form-data">
-                            @csrf            
+                            @csrf       
+                            <div class="mb-3 mr-3">
+                                <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                    @foreach ($dataseries as $data)
+                                        <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                    @endforeach
+                                </select>
+                            </div>     
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Tipu Ikan</label>
                                 <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
@@ -18,7 +26,8 @@
                                     @error('naran')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
-                            </div>                          
+                            </div> 
+                                                     
                           <button type="submit" class="btn btn-primary">Submete</button>
                         </form>
                     </div>

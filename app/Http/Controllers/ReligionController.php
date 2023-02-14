@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Religion;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReligionController extends Controller
 {
@@ -13,12 +16,18 @@ class ReligionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Religion::paginate('5');
-        return view('datareligion',compact('data'));
+        if($request->has('search')){
+            $data = Religion::where('id_religion','LIKE','%' .$request->search.'%')->paginate(5);
+            Session::put('halaman_url', request()->fullUrl());
+        }else{
+            $data = Religion::paginate(5);
+           
+            Session::put('halaman_url', request()->fullUrl());
+        }
+        return view('datareligion', compact('data'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +35,8 @@ class ReligionController extends Controller
      */
     public function create()
     {
-        return view('tambahreligion');
+        $dataseries = Serie::all();
+        return view('tambahreligion', compact('dataseries'));
     }
 
     /**
@@ -37,8 +47,9 @@ class ReligionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Religion::create($request->all());
-        return Redirect()->route('datareligion');
+        Religion::create($request->all());
+        $dataseries = Serie::all();
+        return redirect()->route('datareligion', compact('dataseries'))->with('success',' Dadus Submete Ho Susesu! ');
     }
 
     /**
@@ -58,9 +69,11 @@ class ReligionController extends Controller
      * @param  \App\Models\Religion  $religion
      * @return \Illuminate\Http\Response
      */
-    public function edit(Religion $religion)
+    public function edit($id)
     {
-        //
+        $data = Religion::find($id);
+        $dataseries = Serie::all();
+        return view('editreligion', compact('data','dataseries'));
     }
 
     /**
@@ -70,9 +83,13 @@ class ReligionController extends Controller
      * @param  \App\Models\Religion  $religion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Religion $religion)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Religion::find($id);
+        $data->series_id = $request->input('series_id');
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('datareligion')->with('success',' Dadus Konsegue Retifika! ');
     }
 
     /**
@@ -81,8 +98,20 @@ class ReligionController extends Controller
      * @param  \App\Models\Religion  $religion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Religion $religion)
+    public function delete($id)
     {
-        //
+        $data = Religion::find($id);
+        $data->delete();
+        return redirect()->route('datareligion')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Religion::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('religion-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Relijiaun.pdf"
+        );
     }
 }

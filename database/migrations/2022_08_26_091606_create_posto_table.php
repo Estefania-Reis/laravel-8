@@ -15,6 +15,10 @@ class CreatePostoTable extends Migration
     {
         Schema::create('posto', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_posto');
+            $table->string('municipio_id');
             $table->string('naran');
             $table->timestamps();
         });

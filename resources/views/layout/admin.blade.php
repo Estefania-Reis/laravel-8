@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Pescas e Aquicultura Municipio Ermera</title>
 
   
@@ -19,14 +20,34 @@
   {{-- style --}}
   <link rel="stylesheet" href="{{ asset('template/dist/css/adminlte.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  {{-- estrutura style --}}
+  <link href="/css/style.css"rel="stylesheet"type="text/css"/>
+  {{-- chart css and js --}}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css?v=3.2.0">
+  <script nonce="5514d88e-77bb-4c0d-88d5-344d751146ba">(function(w,d){!function(e,f,g,h){e.zarazData=e.zarazData||{};e.zarazData.executed=[];e.zaraz={deferred:[],listeners:[]};e.zaraz.q=[];e.zaraz._f=function(i){return function(){var j=Array.prototype.slice.call(arguments);e.zaraz.q.push({m:i,a:j})}};for(const k of["track","set","debug"])e.zaraz[k]=e.zaraz._f(k);e.zaraz.init=()=>{var l=f.getElementsByTagName(h)[0],m=f.createElement(h),n=f.getElementsByTagName("title")[0];n&&(e.zarazData.t=f.getElementsByTagName("title")[0].text);e.zarazData.x=Math.random();e.zarazData.w=e.screen.width;e.zarazData.h=e.screen.height;e.zarazData.j=e.innerHeight;e.zarazData.e=e.innerWidth;e.zarazData.l=e.location.href;e.zarazData.r=f.referrer;e.zarazData.k=e.screen.colorDepth;e.zarazData.n=f.characterSet;e.zarazData.o=(new Date).getTimezoneOffset();if(e.dataLayer)for(const r of Object.entries(Object.entries(dataLayer).reduce(((s,t)=>({...s[1],...t[1]})))))zaraz.set(r[0],r[1],{scope:"page"});e.zarazData.q=[];for(;e.zaraz.q.length;){const u=e.zaraz.q.shift();e.zarazData.q.push(u)}m.defer=!0;for(const v of[localStorage,sessionStorage])Object.keys(v||{}).filter((x=>x.startsWith("_zaraz_"))).forEach((w=>{try{e.zarazData["z_"+w.slice(7)]=JSON.parse(v.getItem(w))}catch{e.zarazData["z_"+w.slice(7)]=v.getItem(w)}}));m.referrerPolicy="origin";m.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(e.zarazData)));l.parentNode.insertBefore(m,l)};["complete","interactive"].includes(f.readyState)?zaraz.init():e.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,0,"script");})(window,document);</script>
+  <link rel='stylesheet' href='https://unpkg.com/leaflet@1.8.0/dist/leaflet.css' crossorigin='' />
+
   @stack('css')
+    <style>
+       .text-center {
+        text-align: center;
+    }
+    #map {
+        width: 800px;
+        height: 400px;
+    }
+    </style>
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body>
+{{-- <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed"> --}}
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center" style="background-image: url('{{ asset('template/dist/img/img5.jpg') }}');
+  <div class="preloader flex-column justify-content-center align-items-center" style="background-color:rgb(186, 245, 197); );
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;">
@@ -40,18 +61,15 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars" style="color: aliceblue;"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      {{-- <li class="nav-item d-none d-sm-inline-block">
         <a href="layout.admin" class="nav-link" style="color: aliceblue;">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link" style="color: aliceblue;">Contact</a>
-      </li>
+      </li> --}}
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-      <li class="nav-item">
+      {{-- <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search" style="color: aliceblue;"></i>
         </a>
@@ -70,17 +88,40 @@
             </div>
           </form>
         </div>
-      </li>
+      </li> --}}
 
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
+      {{-- <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments" style="color: aliceblue;"></i>
           <span class="badge badge-danger navbar-badge">3</span>
         </a>
-      </li>
+      </li> --}}
       <!-- Notifications Dropdown Menu -->
      
+      @can('tadmin')
+             <li class="nav-item">
+            <a href="#" class="nav-link" style="color:rgb(184, 223, 10);">
+              </i><i class="nav-icon fas fa-bell"></i> Notifikasaun (0)
+            </a>
+          </li>
+          <li>
+          @endcan
+
+          @can('responsavel')
+             <li class="nav-item">
+            <a href="#" class="nav-link" style="color:rgb(184, 223, 10);">
+              </i><i class="nav-icon fas fa-bell"></i> Notifikasaun (0)
+            </a>
+          </li>
+          <li>
+          @endcan
+
+      <li class="nav-item ml-3">
+        <a class="nav-link" data-widget="fullscreen" href="/logout" role="button" style="color: rgb(95, 9, 45); font-size:13px">
+          <i class="fas fa-sign-out-alt" style="color: aliceblue;"></i> <strong>Log Out</strong> 
+        </a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt" style="color: aliceblue;"></i>
@@ -100,13 +141,13 @@
     
     <!-- Brand Logo -->
    
-    <a href="layout.admin" class="brand-link">
+    <a href="layout.admin" class="brand-link" style="text-decoration: none;" >
       <img src="{{ asset('template/dist/img/map.jfif') }}" alt="PA Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light" style="color: aliceblue;">Pescas e Aquicultura</span>
+      <span class="brand-text font-weight-light" style="color: rgb(10, 82, 15); font-size:12pt"><strong>Pescas e Aquicultura</strong></span>
     </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar mt-1">
       <!-- Sidebar user panel (optional) -->
       {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
@@ -117,7 +158,7 @@
         </div>
       </div> --}}
       <!-- SidebarSearch Form -->
-      <div class="form-inline">
+      {{-- <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -126,10 +167,10 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> --}}
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
+      <nav class="mt-0">
        
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
@@ -171,95 +212,122 @@
               </p>
             </a>
           </li>
-
+          @can('admin')
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
-              <i class="nav-icon fas fa-chalkboard-teacher"></i> Funcionario PA
+            <a href="/utilizador" class="nav-link">
+              <i class="nav-icon fas fa-user-circle"></i> Utilizador
             </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/estrutura">Estrutura</a></li>
-              <li><a class="dropdown-item" href="#">Avaliasaun</a></li>
-              <li><a class="dropdown-item" href="/pegawai">Funcionario PA</a></li>
-            </ul>
+          </li>          
+          @endcan
+          @can('tadmin')
+          <li class="nav-item">
+            <a href="/importasaun_fini" class="nav-link" >
+              </i><i class="nav-icon fas fa-download"></i>Importasaun Fini
+            </a>
           </li>
-
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
-              <i class="nav-icon fas fa-fish"></i>Dadus Ikan
+              </i><i class="nav-icon fas fa-fish"></i> Produsaun
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
               <li><a class="dropdown-item" href="/data_ikan/index">Ikan Brood</a></li>
               <li><a class="dropdown-item" href="/ikanTolun/index">Ikan Tolun</a></li>
               <li><a class="dropdown-item" href="/data_ikan_srt/index">Ikan Srt</a></li>
               <li><a class="dropdown-item" href="/data_ikan_oan/index">Ikan Oan/Nursery</a></li>
-              <li><a class="dropdown-item" href="/data_extra/tipu_ikan/index">Tipu Ikan</a></li>
-              <li><a class="dropdown-item" href="/data_extra/orijem/index">Orijem Ikan</a></li>
+              <li><a class="dropdown-item" href="/kandidatu_ikan">Kandidatu Ikan Brood</a></li>
             </ul>
           </li>
-                     
+          {{-- Lelaun --}}
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
-              <i class="nav-icon far fa-address-card"></i> Kliente
+              </i><i class="nav-icon fas fa-upload"></i> Lelaun
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/klientes/individual/index">Kliente Individual</a></li>
-              <li><a class="dropdown-item" href="/klientes/grupo/index">Kliente Grupu</a></li>
+              <li><a class="dropdown-item" href="/lelaun">Lelaun</a></li>
+              <li><a class="dropdown-item" href="/nota_kompras">Nota Kompras</a></li>
             </ul>
           </li>
-
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
-              <i class="nav-icon fa fa-bookmark"></i> Operasaun
-            </a>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/operasaun/distribuisaun/index">Distribuisaun</a></li>
-              <li><a class="dropdown-item" href="/operasaun/lelaun/index">Lelaun</a></li>
-            </ul>
-          </li>
-
+          {{-- manutensaun --}}
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
               <i class="nav-icon fas fa-certificate"></i> Manutensaun
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+              <li><a class="dropdown-item" href="/rekursu/bee/index">Kualidade Bee</a></li>
               <li><a class="dropdown-item" href="/manutensaun/kolam/index">Kolam</a></li>
+              <li><a class="dropdown-item" href="/manutensaun/hapa/index">Hapa</a></li>
               <li><a class="dropdown-item" href="/manutensaun/incubator/index">Incubator</a></li>
-              <li class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/manutensaun/troka_bee/kolam/index">Troka Bee Kolam</a></li>
+              <li><a class="dropdown-item" href="/eletrisidade/index">Eletrisidade</a></li>
+              <li><a class="dropdown-item" href="/fertilizante">Fertilizante</a></li>
+              <li><a class="dropdown-item" href="/rekursu/hahan_ikan/index">Ingredientes</a></li>
+              <li><a class="dropdown-item" href="/fo-han">Horariu Fo-han</a></li>
             </ul>
           </li>
-         
-          <li class="nav-item dropdown">
+          @endcan
+          
+             {{-- pedidu --}}
+             @can('responsavel')
+               
+             <li class="nav-item dropdown">
+               <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
+                 </i><i class="nav-icon fas fa-fish"></i> Pedidu
+               </a>
+               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                 <li><a class="dropdown-item" href="/pedidu">Pedidu Fini</a></li>
+                 {{-- <li><a class="dropdown-item" href="/operasaun/distribuisaun/index">Distribuisaun Fini</a></li> --}}
+                 <li><a class="dropdown-item" href="/klientes/individual/index">Benefisiariu Ind.</a></li>
+                 <li><a class="dropdown-item" href="/klientes/grupo/index">Benefisiariu Grupu</a></li>
+               </ul>
+             </li>
+             @endcan
+                     
+          {{-- <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
-              <i class="nav-icon fas fa-solid fa-list"></i> Rekursu
+              </i><i class="nav-icon fas fa-fish"></i> Diminuisaun
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/rekursu/bee/index">Bee</a></li>
-              <li><a class="dropdown-item" href="{{ url('/rekursu/hahan_ikan/index') }}">Hahan Ikan</a></li>
+              <li><a class="dropdown-item" href="/ikanmate/index">Ikan Brood</a></li>
+              <li><a class="dropdown-item" href="/ikantolund">Ikan Tolun</a></li>
+              <li><a class="dropdown-item" href="/ikansrtmate/index">Ikan Srt</a></li>
+              <li><a class="dropdown-item" href="/ikanoanmate/index">Ikan Oan/Nursery</a></li>
+              <li><a class="dropdown-item" href="/ikannurserynd/index">Ikan Oan/Nursery N. M. Sex</a></li>
+              <li><a class="dropdown-item" href="#">Kandidatu Ikan Brood</a></li>
             </ul>
-          </li>
-
+          </li> --}}
+ 
+          {{-- informasaun --}}
+          @can('admin')
           <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown">
-              <i class="nav-icon fas fa-folder-open"></i> Informasaun
+              <i class="nav-icon fa fa-info-circle"></i> Custom Data
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
               <li><a class="dropdown-item" href="/datareligion">Relijiaun</a></li>
               <li><a class="dropdown-item" href="{{ url('/data_extra/niv_ed/index') }}">Nivel Edukasaun</a></li>
-              <li><a class="dropdown-item" href="/data_extra/aldeia/index">Aldeia</a></li>
-              <li><a class="dropdown-item" href="/data_extra/suco/index">Suco</a></li>
-              <li><a class="dropdown-item" href="/data_extra/posto/index">Posto</a></li>
-              <li><a class="dropdown-item" href="/data_extra/municipio/index">Municipio</a></li>
+              <li><a class="dropdown-item" href="/data_extra/aldeia/index">Lokalizasaun</a></li>
+              <li><a class="dropdown-item" href="/series">Series</a></li>
             </ul>
           </li>
-
+          @endcan
+          
           <li class="nav-item">
-            <a href="/logout" class="nav-link">
-              <i class="nav-icon fas fa-arrow-circle-left"></i>
-              <p>
-                Logout
-               
-              </p>
+            <a href="/estrutura" class="nav-link" >
+              </i><i class="nav-icon fas fa-users"></i>Estrutura FPA
+            </a>
+          </li>
+          
+          @can('xefe')
+          <li class="nav-item">
+            <a href="/employee" class="nav-link" >
+              </i><i class="nav-icon fas fa-user-tie"></i>Funcionariu PA
+            </a>
+          </li>
+          <li>
+          @endcan
+ 
+          <li class="nav-item">
+            <a href="/relatoriu" class="nav-link">
+              </i><i class="nav-icon fa fa-file"></i> Relatoriu
             </a>
           </li>
 
@@ -877,7 +945,7 @@
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
-  <footer class="main-footer" style="color: rgb(206, 210, 213)">
+  <footer class="main-footer" style="color: rgb(251, 253, 255)">
     <strong>Copyright &copy; 2022 <a href="#" style="color: aqua">untl/fect/dei</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">

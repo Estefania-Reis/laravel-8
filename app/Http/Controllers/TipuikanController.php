@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Serie;
 use App\Models\Tipuikan;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TipuikanController extends Controller
 {
@@ -25,7 +27,8 @@ class TipuikanController extends Controller
      */
     public function create()
     {
-        return view('data_extra\tipu_ikan\aumentadata');
+        $dataseries = Serie::all();
+        return view('data_extra\tipu_ikan\aumentadata', compact('dataseries'));
     }
 
     /**
@@ -37,7 +40,8 @@ class TipuikanController extends Controller
     public function store(Request $request)
     {
         Tipuikan::create($request->all());
-        return Redirect()->route('indextipu');
+        $dataseries = Serie::all();
+        return view('data_extra\tipu_ikan\aumentadata', compact('dataseries'))->with('success',' Dadus Submete Ho Susesu! ');
     }
 
     /**
@@ -59,7 +63,9 @@ class TipuikanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Tipuikan::find($id);
+        $dataseries = Serie::all();
+        return view('data_extra.tipu_ikan.edit', compact('data','dataseries'));
     }
 
     /**
@@ -71,7 +77,10 @@ class TipuikanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Tipuikan::find($id); 
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('indextipu')->with('success',' Dadus Konsegue Retifika! ');
     }
 
     /**
@@ -80,8 +89,20 @@ class TipuikanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $data = Tipuikan::find($id);
+        $data->delete();
+        return redirect()->route('indextipu')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Tipuikan::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_extra.tipu_ikan.tipuIkan-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Tipu-Ikan.pdf"
+        );
     }
 }

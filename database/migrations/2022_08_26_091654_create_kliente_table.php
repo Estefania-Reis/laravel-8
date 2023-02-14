@@ -15,14 +15,17 @@ class CreateKlienteTable extends Migration
     {
         Schema::create('kliente', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_kliente');
             $table->string('naran');
             $table->enum('genero',['M','F']);
             $table->date('data_moris');
             $table->string('naturalidade');
-            $table->foreignId('aldeia_id');
-            $table->foreignId('suco_id');
-            $table->foreignId('posto_id');
-            $table->foreignId('municipio_id');
+            $table->string('aldeia_id');
+            $table->string('suco_id');
+            $table->string('posto_id');
+            $table->string('municipio_id');
             $table->integer('nmr_telfone');
             $table->string('foto');
             $table->timestamps();

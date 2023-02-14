@@ -16,6 +16,9 @@ class CreateNiveleducasaunTable extends Migration
     {
         Schema::create('niveleducasaun', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_niveleducasaun');
             $table->string('naran');
             $table->timestamps();
         });

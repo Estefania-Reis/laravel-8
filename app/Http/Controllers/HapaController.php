@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hapa;
+use App\Models\Kolam;
+use App\Models\Serie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HapaController extends Controller
 {
@@ -12,9 +17,16 @@ class HapaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexhapa()
+    public function indexhapa(Request $request)
     {
-        $data = Hapa::paginate('5');
+        if($request->has('search')){
+            $data = Hapa::where('id_hapa','LIKE','%' .$request->search.'%')->paginate(5);
+            Session::put('halaman_url', request()->fullUrl());
+        }else{
+            $data = Hapa::paginate(5);
+           
+            Session::put('halaman_url', request()->fullUrl());
+        }
         return view('manutensaun\hapa\index',compact('data'));
     }
 
@@ -25,7 +37,9 @@ class HapaController extends Controller
      */
     public function create()
     {
-        return view('manutensaun\hapa\aumentadata');
+        $datakolam = Kolam::all();
+        $dataseries = Serie::all();
+        return view('manutensaun\hapa\aumentadata',compact('datakolam','dataseries'));
     }
 
     /**
@@ -37,7 +51,9 @@ class HapaController extends Controller
     public function store(Request $request)
     {
         Hapa::create($request->all());
-        return Redirect()->route('indexhapa');
+        $datakolam = Kolam::all();
+        $dataseries = Serie::all();
+        return redirect()->route('indexhapa', compact('datakolam','dataseries'))->with('success',' Dadus Konsegue Submete Ho Susesu! ');
     }
 
     /**
@@ -60,8 +76,10 @@ class HapaController extends Controller
     public function edit(Hapa $hapa, $id)
     {
         $data = Hapa::find($id);
+        $dataseries = Serie::all();
+        $datakolam = Kolam::all();
         //dd($data);
-        return view('manutensaun\hapa\edit',compact('data'));
+        return view('manutensaun\hapa\edit',compact('data','dataseries','datakolam'));
     }
 
     /**
@@ -74,9 +92,12 @@ class HapaController extends Controller
     public function updatedatahapa(Request $request, $id)
     {
         $data = Hapa::find($id); 
+        $data->series_id = $request->input('series_id');
+        $data->kolam_id = $request->input('kolam_id');
         $data->tipu_hapa = $request->input('tipu_hapa');
-        $data->luan = $request->input('luan');
-        $data->naruk = $request->input('naruk');
+        $data->largura = $request->input('largura');
+        $data->comprimento = $request->input('comprimento');
+        $data->area = $request->input('area');
         $data->altura = $request->input('altura');
         $data->volume = $request->input('volume');
         $data->status = $request->input('status');
@@ -96,5 +117,15 @@ class HapaController extends Controller
         $data = Hapa::find($id);
         $data->delete();
         return redirect()->route('indexhapa')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Hapa::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('manutensaun.hapa.hapa-pdf', $data->toArray())->setPaper('a4', 'landscape')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Hapa.pdf"
+        );
     }
 }

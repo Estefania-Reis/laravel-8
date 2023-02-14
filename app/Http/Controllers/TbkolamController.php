@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\Kolam;
 use App\Models\Tbkolam;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class TbkolamController extends Controller
 {
@@ -42,7 +44,10 @@ class TbkolamController extends Controller
     public function store(Request $request)
     {
         Tbkolam::create($request->all());
-        return Redirect()->route('indextbkolam');
+        $data    = Tbkolam::all();
+        $dataemp = Employee::all();
+        $datakol = Kolam::all();
+        return view('manutensaun\troka_bee\kolam\aumentadata', compact('data','dataemp', 'datakol'))->with('success',' Dadus Submete Ho Susesu!');
     }
 
     /**
@@ -101,5 +106,15 @@ class TbkolamController extends Controller
         $data = Tbkolam::find($id);
         $data->delete();
         return redirect()->route('indextbkolam')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Tbkolam::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('manutensaun.troka_bee.kolam.trokabeeKolam-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Troka-Bee-Kolam.pdf"
+        );
     }
 }

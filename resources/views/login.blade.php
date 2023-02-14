@@ -17,27 +17,42 @@
   <link rel="stylesheet" href="{{ asset('template/dist/css/adminlte.min.css') }}">
 </head>
 
-<body class="hold-transition login-page" style="background-image: url('{{ asset('template/dist/img/img3.jpg') }}');
+<body class="hold-transition login-page" style="background-image: url('{{ asset('template/dist/img/login.png') }}');
 background-repeat: no-repeat;
 background-attachment: fixed;
 background-size: 100% 100%;">
+
+
   <br><br>
-  <div class="login-box- table-responsive-lg" >
+  @if(session()->has('loginError'))
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('loginError') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  <br><br><br><br>
+  
+  <div class="login-box- table-responsive-lg ml-5">
     <!-- /.login-logo -->
-    <div class="card card-outline card-primary" style="background-image: url('{{ asset('template/dist/img/img4.jpg') }}');
+    <div class="card card-outline card-primary ml-5" style="background-image: url('{{ asset('template/dist/img/login.png') }}');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: 100% 100%;">
-      <div class="card-header text-center" style="background-color: transparent; color: rgb(251, 255, 251); box-shadow: 0 5px 30px rgb(236, 226, 226);">
-        <a href="layout.admin" class="h1 embed-responsive"><b style="font-size: 22px">Pescas e Aquicultura</b><br><b style="font-size: 22px">Municipio Ermera</b></a>
+    background-size: 100% 100%;
+    width:200%;
+    color:rgb(10, 82, 15)">
+      <div class="card-header text-center">
+        <a href="layout.admin" class="h1 embed-responsive"><b style="font-size: 22px">Pescas e Aquicultura</b><br><b style="font-size: 22px">Centro Viveiros Gleno-Ermera</b></a>
       </div>
-      <div class="card-body" style="background-color: transparent; box-shadow: 0 5px 30px rgb(232, 217, 217); color:aquamarine">
+      <div class="card-body" >
         <p class="login-box-msg">Sign in to start your session</p>
 
         <form action="/loginproses" method="post">
         @csrf
           <div class="input-group mb-3">
-            <input type="email" class="form-control" name="email" placeholder="Email">
+            {{-- <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="username" placeholder="Username" autofocus> --}}
+            <input type="username" class="form-control" name="username" placeholder="Username" autofocus>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
@@ -73,9 +88,9 @@ background-size: 100% 100%;">
         <!-- /.social-auth-links -->
 
     
-        <p class="mb-0">
+        {{-- <p class="mb-0">
           <a href="/register" class="text-center"  style="color: rgb(237, 245, 242)"><b> Register a new membership</b></a>
-        </p>
+        </p> --}}
       </div>
       <!-- /.card-body -->
     </div>

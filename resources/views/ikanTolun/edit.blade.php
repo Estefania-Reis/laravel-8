@@ -3,111 +3,122 @@
 @section('content')
 
 <body>
-    <h1 class="text-center mb-4">Hadia Dadus</h1>
-
+    <div class="content-wrapper mt-5">
     <div class="container">
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size:20px">
+                            <strong>Hadia Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
-                    <form action="/updatedataikan/{{ $data->id }}" method="POST" enctype="multipart/form-data">
+                    <form action="/updatedataikantolun/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tipu Ikan</label>
-                                <select class="form-select" name="tipu_id" aria-label="Default select example">
-                                    @foreach ($datatipuikan as $dataikan)
-                                    @if(old('tipu_id', $data->tipu_id) == $dataikan->id)
-                                    <option value="{{ $dataikan->id }}" selected>{{ $dataikan->naran }}</option>
-                                    @else
-                                    <option value="{{ $dataikan->id }}">{{ $dataikan->naran }}</option> 
-                                    @endif
-                                    @endforeach
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Data Kolleta</label>
+                                    <input type="text" name="data_kolleta" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" value="{{date('j-n-Y ', strtotime ($data->data_kolleta)) }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $datas)
+                                        @if (old('series_id',$data->series_id) == $datas->id)
+                                            <option selected value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @else
+                                        <option value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Id Ikan</label><br>
+                                    <select class="form-select" name="ikan_id" aria-label="Default select example">
+                                        @foreach ($dataidikan as $dataikan)
+                                        @if (old( 'ikan_id', $data->ikan_id) == $dataikan->id_ikanbrood)
+                                        <option selected value="{{ $dataikan->id_ikanbrood }}">{{ $dataikan->id_ikanbrood }}</option>
+                                        @else
+                                        <option value="{{ $dataikan->id_ikanbrood }}">{{ $dataikan->id_ikanbrood }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div> 
+                                {{-- <div class="mb-3 mr-3">
+                                    <label for="exampleInputEmail1" class="form-label">Id Kolam</label><br>
+                                    <select class="form-select" name="kolam_id" aria-label="Default select example">
+                                        @foreach ($dataidkolam as $datak)
+                                        @if (old('kolam_id', $data->kolam_id) == $datak->id_kolam)
+                                        <option selected value="{{ $datak->id_kolam }}">{{ $datak->id_kolam }}</option>
+                                        @else
+                                        <option value="{{ $datak->id_kolam }}">{{ $datak->id_kolam }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3 mr-3">
+                                    <label for="exampleInputEmail1" class="form-label">Id Hapa</label><br>
+                                    <select class="form-select" name="hapa_id" aria-label="Default select example">
+                                        @foreach ($dataidhapa as $datah)
+                                        @if (old('hapa_id', $data->hapa_id) == $datah->id_hapa)
+                                        <option selected value="{{ $datah->id_hapa }}">{{ $datah->id_hapa }}</option>
+                                        @else
+                                        <option value="{{ $datah->id_hapa }}">{{ $datah->id_hapa }}</option>   
+                                        @endif 
+                                        @endforeach
+                                    </select>
+                                </div> --}}
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Id Funcionario</label><br>
+                                    <select class="form-select" name="staff_id" aria-label="Default select example">
+                                        @foreach ($dataidfun as $dataf)
+                                        @if (old('staff_id', $data->staff_id) == $dataf->id_employee)
+                                        <option selected value="{{ $dataf->id }}">{{ $dataf->id_employee }}</option>
+                                        @else
+                                        <option value="{{ $dataf->id }}">{{ $dataf->id_employee }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>  
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Kuantidade Ikan Inan</label>
+                                    <input type="text" name="total_ikan_F" class="form-control" id="total_ikan_F" value="{{ $data->total_ikan_F }}" >
                             </div>
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Jerasaun</label>
-                                <select class="form-select" name="jerasaun" aria-label="Default select example">
-                                    <option selected>{{ $data->jerasaun }}</option>
-                                    <option value="I">I</option>
-                                    <option value="II">II</option>
-                                    <option value="III">III</option>
-                                    <option value="IV">IV</option>
-                                </select>
-                            </div>
-                           
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">kuantidade Ikan Aman</label>
-                                <input type="number" name="kuantidade_ikan_aman" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ $data->kuantidade_ikan_aman }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">kuantidade Ikan Inan</label>
-                                <input type="number" name="kuantidade_ikan_inan" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ $data->kuantidade_ikan_inan }}">
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Orijem Ikan</label>
-                                <select class="form-select" name="orijem_id" aria-label="Default select example">
-                                    @foreach ($dataorijemikan as $dataori)
-                                    @if(old('orijem_id', $data->orijem_id) == $dataori->id)
-                                    <option value="{{ $dataori->id }}" selected>{{ $dataori->naran }}</option>
-                                    @else
-                                    <option value="{{ $dataori->id }}">{{ $dataori->naran }}</option> 
-                                    @endif
-                                    @endforeach
-                                </select>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Ikan Tolun</label>
+                                <input type="text" name="total_ikan_tolun" class="form-control" id="total_ikan_tolun" value="{{ $data->total_ikan_tolun }}">
                             </div>  
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id Kolam</label>
-                                <select class="form-select" name="kolam_id" aria-label="Default select example">
-                                    @foreach ($datakolam as $datakol)
-                                    @if(old('kolam_id', $data->kolam_id) == $datakol->id)
-                                    <option value="{{ $datakol->id }}" selected>{{ $datakol->id }}</option>
+                            </div>
+                            {{-- <div class="row"> --}}
+                                 
+                            {{-- <div class="mb-3 mr-3">
+                                <label for="exampleInputEmail1" class="form-label">Id Incubator</label><br>
+                                <select class="form-select" name="incubator_id" aria-label="Default select example">
+                                    @foreach ($dataidincu as $datai)
+                                    @if (old('incubator_id', $data->incubator_id) == $datai->id_incubator)
+                                    <option selected value="{{ $datai->id_incubator }}">{{ $datai->id_incubator }}</option>
                                     @else
-                                    <option value="{{ $datakol->id }}">{{ $datakol->id }}</option> 
+                                    <option value="{{ $datai->id_incubator }}">{{ $datai->id_incubator }}</option> 
                                     @endif
                                     @endforeach
                                 </select>
-                            </div> 
-                            
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id Hapa</label>
-                                <select class="form-select" name="hapa_id" aria-label="Default select example">
-                                    @foreach ($datahapa as $datah)
-                                    @if(old('hapa_id', $data->hapa_id) == $datah->id)
-                                    <option value="{{ $datah->id }}" selected>{{ $datah->id }}</option>
-                                    @else
-                                    <option value="{{ $datah->id }}">{{ $datah->id }}</option> 
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div> 
-
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Periodo Hahu Hakiak Ikan</label>
-                                <input type="text" name="periodo" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ date('j-n-Y ', strtotime($data->periodo)) }}"> 
-                              </div>
-
-                              <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Periodo Expire</label>
-                                <input type="text" name="periodo_expire" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ date('j-n-Y ', strtotime($data->periodo_expire)) }}"> 
-                              </div>
-
+                            </div>  --}}
+                            {{-- </div> --}}
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 
 

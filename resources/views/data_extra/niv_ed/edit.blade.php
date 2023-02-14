@@ -3,6 +3,7 @@
 @section('content')
 
 <body>
+    <div class="content-wrapper">
     <h1 class="text-center mb-4">Edit Dadus Nivel Edukasaun</h1>
 
     <div class="container">
@@ -13,19 +14,32 @@
                     <div class="card-body">
                         <form action="/updatedataniv/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Nivel Edukasaun</label>
-                                <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ $data->naran }}">
-
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
+                            <div class="row">
+                                <div class="mb-3 mr-2 col-3">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $datas)
+                                        @if (old('series_id', $data->series_id) == $datas->id)
+                                        <option value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @else
+                                        <option selected value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @endif 
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-7">
+                                    <label for="exampleInputEmail1" class="form-label">Nivel Edukasaun</label>
+                                    <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" value="{{ $data->naran }}">
+                                </div>
+                            </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 
 

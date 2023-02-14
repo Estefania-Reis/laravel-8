@@ -7,36 +7,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 @endpush
 @section('content')
-<br>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="container m-2 ">
-        <a href="/data_ikan/aumentadata" class="btn btn-success">Adisiona +</a>
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
+                @can('tadmin')
+                <div class="col-auto ml-3">
+                    <a href="/data_ikan/aumentadata" class="btn btn-info">Adisiona +</a>
+                </div>
+                @endcan
             <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
+                <a href="/export-ikan-brood" class="btn btn-danger">Export PDF</a>
             </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
-            </div>
-            <div class="col-auto">
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
+            {{-- <div class="col-auto">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
+                <button type="button" class="btn btn-warning" >
+                    <a href="../data_extra/tipu_ikan/index" style="color: rgb(234, 255, 255); text-decoration:none">Tipu</a>
                 </button>
             </div>
-
+            <div class="col">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-warning" >
+                    <a href="../data_extra/orijem/index" style="color: rgb(234, 255, 255); text-decoration:none">Orijem</a>
+                </button>
+            </div> --}}
+            <div class="col-auto mr-4">
+                <form action="/data_ikan/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
+            </div>
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -68,20 +75,20 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
-                        <th scope="col">Tipu Ikan</th>
-                        <th scope="col">Jerasaun</th>
-                        <th scope="col">Kuantidade Ikan Aman</th>
-                        <th scope="col">Kuantidade Ikan Inan</th>
-                        <th scope="col">Orijem</th>
-                        <th scope="col">Id Kolam</th>
-                        <th scope="col">Periodo Emitido</th>
-                        <th scope="col">Periodo Expire</th>
+                        <th scope="col">Id Ikan Brood</th>
+                        <th scope="col">Total Ikan Aman</th>
+                        <th scope="col">Total Ikan Inan</th>
+                        <th scope="col">Kode Kolam</th>
+                        <th scope="col">Kode Hapa</th>
+                        <th scope="col">Kodigu Familia</th>
+                        <th scope="col">Data Husik</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -91,24 +98,23 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
-                        <td>{{ $row->tipuikan['naran'] }}</td>
-                        <td>{{ $row->jerasaun }}</td>
-                        <td>{{ $row->kuantidade_ikan_aman }}</td>
-                        <td>{{ $row->kuantidade_ikan_inan }}</td>
-                        <td>{{ $row->orijem['naran'] }}</td>
-                        <td>{{ $row->kolam['id'] }}</td>
-                        <td>{{ $row->periodo->format('Y') }}</td>
-                        <td>{{ $row->periodo->format('Y') }}</td>
+                        <td>{{ $row->id_ikanbrood }}</td>
+                        <td>{{ $row->total_m }}</td>
+                        <td>{{ $row->total_f }}</td>
+                        <td>{{ $row->kolam_id }}</td>
+                        <td>{{ $row->hapa_id }}</td>
+                        <td>{{ $row->codigo_familia}}</td>
+                        <td>{{ $row->data->format('j-n-Y') }}</td>
+                        @can('tadmin')    
                         <td>
-                            
-                            <a href="/data_ikan/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete" data-tipu="{{ $row->tipuikan['naran'] }}"
+                            <a href="/data_ikan/edit/{{ $row->id }}" class="btn1 btn-primary fa fa-edit" style="font-size: 14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-tipu="{{ $row->id_ikanbrood }}"
                                 data-id="{{ $row->id }}"><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
-                        </td>
+                                <a href="/show_dataikan/{{ $row->id }}" class="btn1 btn-warning fa fa-eye" style="font-size: 12px"></a>
+                            </td>
+                        @endcan
                     </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
             {{ $data->links() }}

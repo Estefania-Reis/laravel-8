@@ -11,7 +11,22 @@ class Ikanoan extends Model
     protected $guarded = [];
     protected $dates = ['data','created_at', 'updated_at'];
 
-    public function ikantolun(){
-        return $this->belongsTo(Ikantolun::class);
+    public function kolam(){
+        return $this->belongsTo(Kolam::class,'kolam_nursery_id','id_kolam');
     }
+    public function hapa(){
+        return $this->belongsTo(Hapa::class,'hapa_id','id_hapa');
+    }
+    public function series(){
+        return $this->belongsTo(Serie::class);
+    }
+    
+    public static function boot()
+{
+    parent::boot();
+    static::creating(function($model){
+        $model->numeru = Ikanoan::where('series_id', $model->series_id)->max('numeru') + 1;
+        $model->id_ikanoan = $model->series['series'].'-'.str_pad($model->numeru, 2, '0',STR_PAD_LEFT);
+    });
+}
 }

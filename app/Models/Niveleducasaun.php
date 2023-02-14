@@ -15,4 +15,16 @@ class Niveleducasaun extends Model
     public function employees(){
         return $this->belongsToMany(Employee::class);
     }
+    public function series(){
+        return $this->belongsTo(Serie::class);
+    }
+    
+    public static function boot()
+{
+    parent::boot();
+    static::creating(function($model){
+        $model->numeru = Niveleducasaun::where('series_id', $model->series_id)->max('numeru') + 1;
+        $model->id_niveleducasaun = $model->series['series'].'-'.str_pad($model->numeru, 2, '0',STR_PAD_LEFT);
+    });
+}
 }

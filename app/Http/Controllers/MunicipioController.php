@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Municipio;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MunicipioController extends Controller
 {
@@ -33,7 +35,8 @@ class MunicipioController extends Controller
      */
     public function create()
     {
-        return view('data_extra\municipio\aumentamun');
+        $dataseries = Serie::all();
+        return view('data_extra\municipio\aumentamun', compact('dataseries'));
     }
 
     /**
@@ -45,7 +48,9 @@ class MunicipioController extends Controller
     public function store(Request $request)
     {
         Municipio::create($request->all());
-        return redirect()->route('indexmun');
+        $dataseries = Serie::all();
+        return redirect()->route('municipio', compact('dataseries'))->with('success','Dadus Konsegue Submete Ho Susesu!');
+       
     }
 
     /**
@@ -67,7 +72,9 @@ class MunicipioController extends Controller
      */
     public function edit(Municipio $municipio)
     {
-        //
+        $data = Municipio::find($municipio);
+        $dataseries = Serie::all();
+        return view('data_extra\municipio\edit', compact('data','dataseries'));
     }
 
     /**
@@ -79,7 +86,11 @@ class MunicipioController extends Controller
      */
     public function update(Request $request, Municipio $municipio)
     {
-        //
+        $data = Municipio::find($municipio);
+        $data->series_id = $request->input('series_id');
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('municipio')->with('success','Dadus Konsegue Retifika!');
     }
 
     /**
@@ -88,8 +99,20 @@ class MunicipioController extends Controller
      * @param  \App\Models\Municipio  $municipio
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Municipio $municipio)
+    public function delete($id)
     {
-        //
+        $data = Municipio::find($id);
+        $data->delete();
+        return redirect()->route('municipio')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Municipio::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_extra.municipio.municipio-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Municipio.pdf"
+        );
     }
 }

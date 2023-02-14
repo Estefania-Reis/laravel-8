@@ -15,6 +15,12 @@ class CreateAldeiaTable extends Migration
     {
         Schema::create('aldeia', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_aldeia');
+            $table->string('municipio_id');
+            $table->string('posto_id');
+            $table->string('suco_id');
             $table->string('naran'); 
             $table->timestamps();
         });

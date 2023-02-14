@@ -19,29 +19,32 @@
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
-        <a href="/manutensaun/troka_bee/kolam/aumentadata" class="btn btn-success">Adisiona +</a>
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
+            @can('tadmin')
+            <div class="col-auto ml-3">
+                <a href="/manutensaun/troka_bee/kolam/aumentadata" class="btn btn-info">Adisiona +</a>
             </div>
-
+            @endcan
             <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+                <a href="/export-troka-bee-kolam" class="btn btn-danger">Export PDF</a>
             </div>
-            <div class="col-auto">
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
+            <div class="col-auto mr-4">
+                <form action="/manutensaun/troka_bee/kolam/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
+            </div>
+            
+            {{-- <div class="col-auto">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Import Data
                 </button>
-            </div>
+            </div> --}}
 
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -74,7 +77,7 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table table-responsive-sm a">
+            <table class="table table-responsive-sm">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -83,7 +86,9 @@
                         <th scope="col">Id Kolam</th>
                         <th scope="col">Oras Troka Bee</th>
                         <th scope="col">Data Troka Bee</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -97,11 +102,13 @@
                         <td>{{ $row->kolam_id }}</td>
                         <td>{{ $row->oras_tb->format('H:i') }}</td>
                         <td>{{ $row->data_tb->format('j-n-Y') }}</td>
+                        @can('tadmin')
                         <td>
-                            <a href="/manutensaun/troka_bee/kolam/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete d-inline" data-id="{{ $row->id }}">
-                                <i class="material-icons d-inline" style="font-size:18px">delete</i></a>
+                            <a href="/manutensaun/troka_bee/kolam/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}">
+                                <i class="material-icons" style="font-size:18px">delete</i></a>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
 

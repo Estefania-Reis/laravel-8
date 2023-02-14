@@ -1,80 +1,132 @@
 @extends('layout.admin')
 
 @section('content')
+
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-   <br>
-    <!-- /.content-header -->
+    <div class="container mt-5">
+    <div class="row justify-content-center mt-5">
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        {{-- <h3 class="text-center embed-responsive" style="color: rgb(236, 236, 228)"><b> Sistema Jestaun Baze de Dadus Husi Departamento Representacao Territorial Pescas e Aquicultura Municipio Ermera</h3> --}}
-        <h5>Numero Funcionario Pescas e Aquicultura Municipio Ermera</b></h5>
-        <!-- Info boxes -->
-        <div class="row" style="color: rgb(220, 223, 226)">
-          <div class=""  style="margin-right: 2px; margin-left:7px; margin-top:15px;">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
-              
-              <div class="info-box-content">
-                <span class="info-box-text">Total FPA</span>
-                <span class="info-box-number">
-                  {{ $jumlahpegawai }}
-                  <small> Pessoa</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="" style="margin-right: 2px; margin-left:7px; margin-top:15px;">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-male"></i></span>
+    <div class="vertical-center1 mt-5">
 
-              <div class="info-box-content">
-                <span class="info-box-text">Total FPA Mane</span>
-                <span class="info-box-number">{{ $jumlahpegawaicowo }}<small class> Pessoa</small></span>
-                
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-
-          <div class="" style="margin-right: 2px; margin-left:7px; margin-top:15px;">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-female"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Total FPA Feto</span>
-                <span class="info-box-number">{{ $jumlahpegawaicewe }} <small> Pessoa</small></span>
-                
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-         
-          <!-- /.col -->
+      <div class="card">
+        <div class="card-header">
+          <div class="vertical-center"><strong>Mapa Timor-Leste</strong></div> 
         </div>
+        <div class="card-body">
 
-        <!-- /.row -->
-      </div><!--/. container-fluid -->
-    </section>
-    <!-- /.content -->
+          <div id='map'></div>
+          <script src='https://unpkg.com/leaflet@1.8.0/dist/leaflet.js' crossorigin=''></script>
+  <script>
+      let map, markers = [];
+      // /* ----------------------------- Initialize Map ----------------------------- */
+      function initMap() {
+          map = L.map('map', {
+              center: {
+                lat: -8.7177,
+                lng: 125.4359,
+              },
+              zoom: 15
+          });
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap'
+          }).addTo(map);
+
+          map.on('click', mapClicked);
+          initMarkers();
+      }
+      initMap();
+
+      // /* --------------------------- Initialize Markers --------------------------- */
+      function initMarkers() {
+          const initialMarkers = <?php echo json_encode($initialMarkers); ?>
+
+          for (let index = 0; index < initialMarkers.length; index++) {
+
+              const data = initialMarkers[index];
+              const marker = generateMarker(data, index);
+              marker.addTo(map).bindPopup(`<b>${data.position.lat},  ${data.position.lng}</b>`);
+              map.panTo(data.position);
+              markers.push(marker)
+          }
+      }
+
+      function generateMarker(data, index) {
+          return L.marker(data.position, {
+                  draggable: data.draggable
+              })
+              .on('click', (event) => markerClicked(event, index))
+              .on('dragend', (event) => markerDragEnd(event, index));
+      }
+
+      // /* ------------------------- Handle Map Click Event ------------------------- */
+      function mapClicked($event) {
+          console.log(map);
+          console.log($event.latlng.lat, $event.latlng.lng);
+      }
+
+      // /* ------------------------ Handle Marker Click Event ----------------------- */
+      function markerClicked($event, index) {
+          console.log(map);
+          console.log($event.latlng.lat, $event.latlng.lng);
+      }
+
+      // /* ----------------------- Handle Marker DragEnd Event ---------------------- */
+      function markerDragEnd($event, index) {
+          console.log(map);
+          console.log($event.target.getLatLng());
+      }
+  </script>
+    
+ <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+        {{-- amcharts --}}
+        <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+        <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+        {{-- <script src='https://unpkg.com/leaflet-control-geocoder@2.4.0/dist/Control.Geocoder.js'></script> --}}
+
+    {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);      
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Tinan', 'Ikan-Aman-Atual', 'Ikan-Inan-Atual', 'Total-Ikan-Atual', 'Ikan-Aman-Diminuidu', 'Ikan-Inan-Diminuidu','Total-Ikan-Diminuidu'],
+          @foreach ($charts as $chart)
+          ["{{ date('Y', strtotime($chart->data)) }}", {{ $chart->qty_atual_m }}, {{ $chart->qty_atual_f }}, {{ $chart->total_atual }}, {{ $chart->qty_dim_m }}, {{ $chart->qty_dim_f }}, {{ $chart->total_dim }}],
+          @endforeach
+        ]);
+
+        var options = {
+          chart: {
+            subtitle: '',
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script> --}}
+
+    
+
+         
+        </div>
+      </div>
+      
+    </div>
+
   </div>
+  </div>
+</div>
 
   @endsection
   @push('scripts')
+
+  
     
- <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>

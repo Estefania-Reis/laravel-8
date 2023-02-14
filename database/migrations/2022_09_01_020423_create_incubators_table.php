@@ -15,6 +15,9 @@ class CreateIncubatorsTable extends Migration
     {
         Schema::create('incubators', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_incubator');
             $table->enum('status',['Diak','Aat','Aatgrave','Manutensaun']);
             $table->text('observasaun');
             $table->timestamps();

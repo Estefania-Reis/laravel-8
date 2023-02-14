@@ -14,30 +14,28 @@
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
-        <a href="/data_extra/tipu_ikan/aumentadata" class="btn btn-success">Adisiona +</a>
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
+            @can('tadmin')
+            <div class="col-auto ml-3">
+                <a href="/data_extra/tipu_ikan/aumentadata" class="btn btn-info">Adisiona +</a>
+            </div>                
+            @endcan
             <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
-            </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+                <a href="../../data_ikan/index" class="btn btn-info"><i class="nav-icon fas fa-arrow-circle-left"></i> Ikan (Brood)</a>
             </div>
             <div class="col-auto">
+                <a href="/export-tipu-ikan" class="btn btn-danger">Export PDF</a>
+            </div>
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
+            <div class="col-auto mr-4">
+                <form action="/data_extra/tipu_ikan/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
-
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -64,18 +62,21 @@
             </div>
         </div>
         <div class="row m-2">
+            <div class="col-6">
             {{-- @if ($message = Session::get('success'))
             <div class="alert alert-success" role="alert">
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
+                        <th scope="col">Id Tipu Ikan</th>
                         <th scope="col">Tipu Ikan</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -85,12 +86,15 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
+                        <td>{{ $row->id_tipuikan}}</td>
                         <td>{{ $row->naran}}</td>
+                        @can('tadmin')
                         <td>
-                            <a href="/tampilkandata/{{ $row->id }}" class="btn btn-info">Edit</a>
-                            <a href="#" class="btn btn-danger delete" data-id="{{ $row->id }}"
-                                data-naran="{{ $row->naran }}">Delete</a>
+                            <a href="/data_extra/tipu_ikan/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
+                                data-naran="{{ $row->naran }}"><i class="material-icons" style="font-size:18px">delete</i></a>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
 
@@ -98,6 +102,7 @@
                 </tbody>
             </table>
             {{ $data->links() }}
+        </div>
         </div>
     </div>
 
@@ -127,18 +132,19 @@
 </body>
 <script>
     $('.delete').click(function () {
+        var ikannrn = $(this).attr('data-naran');
         var ikanid = $(this).attr('data-id');
 
         swal({
             title: "Iha Serteza ?",
-            text: "Ita sei hamos dadus ikan" + ikanid + " ",
+            text: "Ita sei hamos dadus ikan" + ikannrn + " ",
             icon: "warning",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    window.location = "/delete/" + ikanid + ""
+                    window.location = "/delete_tipu/" + ikanid + ""
                     swal("Dadus konsege hamos ona", {
                         icon: "success",
                     });

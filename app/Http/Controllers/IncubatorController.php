@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incubator;
+use App\Models\Serie;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class IncubatorController extends Controller
 {
@@ -25,7 +27,8 @@ class IncubatorController extends Controller
      */
     public function create()
     {
-        return view('manutensaun\incubator\aumentadata');
+        $dataseries = Serie::all();
+        return view('manutensaun\incubator\aumentadata',compact('dataseries'));
     }
 
     /**
@@ -37,7 +40,8 @@ class IncubatorController extends Controller
     public function store(Request $request)
     {
         Incubator::create($request->all());
-        return Redirect()->route('indexincub');
+        $dataseries = Serie::all();
+        return redirect()->route('indexincub',compact('dataseries'))->with('success',' Dadus Konsegue Submete Ho Susesu! ');
     }
 
     /**
@@ -60,8 +64,9 @@ class IncubatorController extends Controller
     public function edit(Incubator $incubator, $id)
     {
         $data = Incubator::find($id);
+        $dataseries = Serie::all();
         //dd($data);
-        return view('manutensaun\incubator\edit',compact('data'));
+        return view('manutensaun\incubator\edit',compact('data','dataseries'));
     }
 
     /**
@@ -74,6 +79,7 @@ class IncubatorController extends Controller
     public function updatedataincub(Request $request, $id)
     {
         $data = Incubator::find($id); 
+        $data->series_id = $request->input('series_id');
         $data->status = $request->input('status');
         $data->observasaun = $request->input('observasaun');
         $data->update();
@@ -91,5 +97,15 @@ class IncubatorController extends Controller
         $data = Incubator::find($id);
         $data->delete();
         return redirect()->route('indexincub')->with('success',' Dadus Konsege Hamos Ona!');
+    }
+    public function exportpdf(){
+        $data = Incubator::all();
+
+        view()->share('data', $data);
+        $pdf = PDF::loadview('manutensaun.incubator.incubator-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Incubator.pdf"
+        );
     }
 }

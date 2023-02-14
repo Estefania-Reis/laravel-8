@@ -3,118 +3,125 @@
 @section('content')
 
 <body>
-    <h1 class="text-center mb-4">Edit Dadus</h1>
+    <div class="content-wrapper mt-5">
 
     <div class="container">
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size: 20px">
+                            <strong>Hadia Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/updatedatakolam/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $datas)
+                                        @if (old('series_id', $data->series_id) == $datas->id)
+                                        <option selected value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @else
+                                        <option value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             <div class="form-group col-md-4">
-                                <label for="exampleInputEmail1" class="form-label">Luan/Largura (m)</label>
-                                <input type="text" name="luan" class="form-control" id="luan"
-                                    aria-describedby="emailHelp" value="{{ $data->luan }}">
-                                    @error('luan')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="exampleInputEmail1" class="form-label">Naruk/Comprimento (m)</label>
-                                <input type="text" name="naruk" class="form-control" id="naruk"
-                                    aria-describedby="emailHelp" value="{{ $data->naruk }}">
-                                    @error('naruk')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="exampleInputEmail1" class="form-label">Aas/Altura Bee (m)</label>
-                                <input type="text" name="altura" class="form-control" id="altura"
-                                    aria-describedby="emailHelp" value="{{ $data->altura }}">
-                                    @error('altura')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Volume Bee (m kubiku)</label>
-                                <input type="text" name="volume_bee" class="form-control" id="volume_bee"
-                                    aria-describedby="emailHelp" readonly value="{{ $data->volume_bee }}">
-                                    {{-- @error('volume_bee')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror --}}
-                            </div> 
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Tipu Kolam</label>
-                                <select class="form-select" name="tipu_kolam" aria-label="Default select example">
-                                    <option selected >{{ $data->tipu_kolam }}</option>
+                                <label for="exampleInputEmail1" class="form-label">Tipu Kolam</label><br>
+                                <select class="form-select" name="tipu_kolam" aria-label="Default select example" id="tipu_kolam">
+                                    <option value="{{ $data->tipu_kolam }}" selected>{{ $data->tipu_kolam }}</option>
+                                    <option value="kandidatu brood">kandidatu brood</option>
                                     <option value="brood">brood</option>
-                                    <option value="nursery">nursery</option>
+                                    <option value="nursery"> nursery</option>
                                     <option value="srt">srt</option>
+                                    <option value="nursery none mono sex">nursery none mono sex</option>
                                 </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Funsionamentu</label>
+                                <input type="text" name="funsionamentu" class="form-control" id="funsionamentu"
+                                    aria-describedby="emailHelp" value="{{ $data->funsionamentu }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Tekniku</label><br>
+                                <select class="form-select" name="employee_id" aria-label="Default select example">
+                                    @foreach ($dataemployee as $datae)
+                                    @if (old('employee_id', $data->employee_id) == $datae->id)
+                                    <option selected value="{{ $datae->id_employee }}">{{ $datae->naran }}</option>
+                                    @else
+                                    <option value="{{ $datae->id_employee }}">{{ $datae->naran }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
+                            </div> 
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
-                                  <label for="exampleInputEmail1" class="form-label">Status Hapa 1</label>
-                                  <select class="form-select" name="hapa1" aria-label="Default select example">
-                                    <option selected value="{{ $data->hapa1 }}">{{ $data->hapa1 }}</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
+                                    <label for="exampleInputEmail1" class="form-label">Comprimento (m)</label>
+                                    <input type="text" name="comprimento_kolam" class="form-control" id="comprimento_kolam"
+                                        aria-describedby="emailHelp" value="{{ $data->comprimento_kolam }}">
                                 </div>
-                                <div class="form-group col-md-4">
-                                  <label for="exampleInputEmail1" class="form-label">Status Hapa 2</label>
-                                  <select class="form-select" name="hapa2" aria-label="Default select example">
-                                    <option selected value="{{ $data->hapa2 }}">{{ $data->hapa2 }}</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="exampleInputEmail1" class="form-label">Status Hapa 3</label>
-                                    <select class="form-select" name="hapa3" aria-label="Default select example">
-                                    <option selected value="{{ $data->hapa3 }}">{{ $data->hapa3 }}</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
-                                  </div>
-                              </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Status Kolam</label>
-                                <select class="form-select" name="status_kolam" aria-label="Default select example">
-                                    <option selected value="{{ $data->status_kolam }}">{{ $data->status_kolam }}</option>
-                                    <option value="Diak">Diak</option>
-                                    <option value="Aat">Aat</option>
-                                    <option value="Aatgrave">Aat Grave</option>
-                                    <option value="Manutensaun">Manutensaun</option>
-                                </select>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Largura (m)</label>
+                                <input type="text" name="largura_kolam" class="form-control" id="largura_kolam"
+                                    aria-describedby="emailHelp" value="{{ $data->largura_kolam }}">
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Observasaun</label>
-                                <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" value="{{ $data->observasaun }}">
-                                    @error('observasaun')
+                            
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Area (m kuadradu)</label>
+                                <input type="text" name="area_kolam" class="form-control" id="area_kolam"
+                                    aria-describedby="emailHelp" readonly value="{{ $data->area_kolam }}">
+                                    
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Aas/Altura Bee (m)</label>
+                                <input type="text" name="altura_kolam" class="form-control" id="altura_kolam"
+                                    aria-describedby="emailHelp" value="{{ $data->altura_kolam }}">
+                                    @error('altura_kolam')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                             </div>
-                                         
-                            <button type="submit" class="btn btn-primary">Submete</button>
-                        </form>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Volume Bee (m kubiku)</label>
+                                <input type="text" name="volume_kolam" class="form-control" id="volume_kolam"
+                                    aria-describedby="emailHelp" readonly value="{{ $data->volume_kolam }}">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Status Kolam</label><br>
+                                <select class="form-select" name="status" aria-label="Default select example">
+                                    <option selected value="{{ $data->status }}">{{ $data->status }}</option>
+                                    <option value="diak">diak</option>
+                                    <option value="aat">aat</option>
+                                    <option value="aatgrave">aat grave</option>
+                                    <option value="manutensaun">manutensaun</option>
+                                </select>
+                            </div>
+                            </div>
+                             
+                            <div class="form-row">
+                                <div class="mb-3 col-7">
+                                    <label for="exampleInputEmail1" class="form-label">Observasaun</label>
+                                    <input type="text" name="observasaun" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" value="{{ $data->observasaun }}">
+                                </div>
+                            </div>      
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
+                            <button type="submit" class="btn btn-info">Submete</button>
+                        </div>            
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 
 
@@ -138,34 +145,44 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
-        $(document).on('blur','#volume_bee', function(){
-            let luan = parseFloat($('#luan').val())
-            // let luan = parseInt($('#luan').val())
-            let naruk = parseFloat($('#naruk').val())
-            let altura = parseFloat($('#altura').val())
-            let rezultadu = luan * naruk * altura
-            $('#volume_bee').val(rezultadu)
+        $(document).on('blur','#area_kolam', function(){
+            let comprimento_kolam = parseFloat($('#comprimento_kolam').val())
+            let largura_kolam = parseFloat($('#largura_kolam').val())
+            let rezultadu = comprimento_kolam * largura_kolam
+            $('#area_kolam').val(rezultadu)
         })
-        $(document).on('blur','#naruk', function(){
-            let luan = parseFloat($('#luan').val())
-            let naruk = parseFloat($('#naruk').val())
-            let altura = parseFloat($('#altura').val())
-            let rezultadu = luan * naruk * altura
-            $('#volume_bee').val(rezultadu)
+        $(document).on('blur','#largura_kolam', function(){
+            let comprimento_kolam = parseFloat($('#comprimento_kolam').val())
+            let largura_kolam = parseFloat($('#largura_kolam').val())
+            let rezultadu = comprimento_kolam * largura_kolam 
+            $('#area_kolam').val(rezultadu)
         })
-        $(document).on('blur','#altura', function(){
-            let luan = parseFloat($('#luan').val())
-            let naruk = parseFloat($('#naruk').val())
-            let altura = parseFloat($('#altura').val())
-            let rezultadu = luan * naruk * altura
-            $('#volume_bee').val(rezultadu)
+        $(document).on('blur','#comprimento_kolam', function(){
+            let comprimento_kolam = parseFloat($('#comprimento_kolam').val())
+            let largura_kolam = parseFloat($('#largura_kolam').val())
+            let rezultadu = comprimento_kolam * largura_kolam
+            $('#area_kolam').val(rezultadu)
         })
-        $(document).on('blur','#luan', function(){
-            let luan = parseFloat($('#luan').val())
-            let naruk = parseFloat($('#naruk').val())
-            let altura = parseFloat($('#altura').val())
-            let rezultadu = luan * naruk * altura
-            $('#volume_bee').val(rezultadu)
+    
+        $(document).on('blur','#volume_kolam', function(){
+            let area_kolam = parseFloat($('#area_kolam').val())
+            let altura_kolam = parseFloat($('#altura_kolam').val())
+            let rezultadu = area_kolam * altura_kolam 
+            $('#volume_kolam').val(rezultadu)
+        })
+    
+        $(document).on('blur','#area_kolam', function(){
+            let area_kolam = parseFloat($('#area_kolam').val())
+            let altura_kolam = parseFloat($('#altura_kolam').val())
+            let rezultadu = area_kolam * altura_kolam
+            $('#volume_kolam').val(rezultadu)
+        })
+            
+        $(document).on('blur','#altura_kolam', function(){
+            let area_kolam = parseFloat($('#area_kolam').val())
+            let altura_kolam = parseFloat($('#altura_kolam').val())
+            let rezultadu = area_kolam * altura_kolam
+            $('#volume_kolam').val(rezultadu)
         })
     
     </script>

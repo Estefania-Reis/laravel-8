@@ -12,31 +12,29 @@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <br>
 
     <div class="container m-2 ">
-        <a href="/klientes/grupo/aumentadata" class="btn btn-success">Adisiona +</a>
+        
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
+            <div class="col-auto ml-3">
+                
+                <a href="/klientes/grupo/aumentadata" class="btn btn-info">Adisiona +</a>
+               
+            </div> 
             <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
+                <a href="/export-benefisiariu-grupu" class="btn btn-danger">Export PDF</a>
             </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
-            </div>
-            <div class="col-auto">
+            <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-            <div class="col-auto">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Import Data
-                </button>
+            <div class="col-auto mr-4">
+                <form action="/klientes/grupo/index" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
+            
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -62,28 +60,31 @@
                 </div>
             </div>
         </div>
-        <div class="row m-5">
+        <div class="row m-2">
             {{-- @if ($message = Session::get('success'))
             <div class="alert alert-success" role="alert">
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table a">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {{-- <th scope="col">Id</th> --}}
-                        <th scope="col">Naran Grupo</th>
-                        <th scope="col">Naran Chefe Grupo</th>
+                        <th scope="col">Id Kliente Grupu</th>
+                        <th scope="col">Naran Grupu</th>
+                        <th scope="col">Naran Chefe Grupu</th>
+                        <th scope="col">Id Eleitoral/BI Xefe</th>
                         <th scope="col">Jeneru</th>
                         <th scope="col">Aldeia</th>
                         <th scope="col">Suco</th>
                         <th scope="col">Posto</th>
                         <th scope="col">Municipio</th>
                         <th scope="col">No Telefone</th>
-                        <th scope="col">Foto</th>
-                        <th scope="col">Created At</th>
+                        {{-- <th scope="col">Foto Kartaun</th> --}}
+                        {{-- <th scope="col">Created At</th> --}}
+                        
                         <th scope="col">Asaun</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -93,23 +94,27 @@
                     @foreach ($data as $index => $row)
                     <tr>
                         <th scope="row">{{ $index + $data->firstItem() }}</th>
+                        <td>{{ $row->id_klientegrupo }}</td>
                         <td>{{ $row->naran }}</td>
                         <td>{{ $row->chefe_grupo }}</td>
+                        <td>{{ $row->no_id_xefe }}</td>
                         <td>{{ $row->jeneru }}</td>
                         <td>{{ $row->aldeia['naran'] }}</td>
                         <td>{{ $row->suco['naran'] }}</td>
                         <td>{{ $row->posto['naran'] }}</td>
                         <td>{{ $row->municipio['naran'] }}</td>
                         <td>{{ $row->nmr_telfone }}</td>
-                        <td>
-                            <img src="{{ asset('storage/fotoklientegrupo/'.$row->foto) }}" alt="" style="width: 40px;">
-                        </td>
-                        <td>{{ $row->created_at->format('j/n/Y') }}</td>
+                        {{-- <td>
+                            <img src="{{ asset('storage/fotoklientegrupo/'.$row->foto_kartaun) }}" alt="" style="width: 40px;">
+                        </td> --}}
+                        {{-- <td>{{ $row->created_at->format('j/n/Y') }}</td> --}}
+                         
                         <td> 
-                            <a href="/klientes/grupo/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete" data-id="{{ $row->id }}"
-                            data-naran="{{ $row->naran }}"><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
+                            <a href="/klientes/grupo/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
+                            data-naran="{{ $row->naran }}"><i class="material-icons" style="font-size:18px">delete</i></a>
                         </td>
+                        
                     </tr>
                     @endforeach
 

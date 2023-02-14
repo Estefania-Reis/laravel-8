@@ -2,62 +2,104 @@
 
 @section('content')
 <body>
-<br>
-    <h1 class="text-center mb-5 mt-5">Adisiona Dadus Ikan</h1>
+    <div class="content-wrapper mt-5">
     <div class="container mb-5">
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size: 20px">
+                            <strong>Adisiona Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/insertdataikantolun" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Id Ikan</label>
-                                <select class="form-select" name="ikan_id" aria-label="Default select example">
-                                    @foreach ($dataidikan as $data)
-                                        <option selected value="{{ $data->id }}">{{ $data->id }}</option>
-                                    @endforeach
-                                </select>
-                            </div>  
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Pezu Ikan Tolun</label>
-                                <input type="text" name="pesu" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
-                                    @error('pesu')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div> 
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Unidade</label>
-                                <input type="text" name="unidade" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
-                                    @error('unidade')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>                     
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Rekursu Bee</label>
-                                <select class="form-select" name="bee_id" aria-label="Default select example">
-                                    @foreach ($databee as $data)
-                                        <option selected value="{{ $data->id }}">{{ $data->orijem_bee }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $data)
+                                            <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Id Funcionario</label><br>
+                                    <select class="form-select" name="staff_id" aria-label="Default select example">
+                                        @foreach ($dataidfun as $data)
+                                            <option selected value="{{ $data->id }}">{{ $data->id_employee }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Id Ikan</label><br>
+                                    <select class="form-select" name="ikan_id" aria-label="Default select example">
+                                        @foreach ($dataidikan as $data)
+                                            <option selected value="{{ $data->id_ikanbrood }}">{{ $data->id_ikanbrood }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> 
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Data</label>
-                                <input type="text" name="data" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Priense data expire YYYY">
-                                    @error('data')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>                 
-                          <button type="submit" class="btn btn-primary">Submete</button>
-                        </form>
+                                {{-- <div class="mb-3 mr-3">
+                                    <label for="exampleInputEmail1" class="form-label">Id Kolam</label><br>
+                                    <select class="form-select" name="kolam_id" aria-label="Default select example">
+                                        @foreach ($dataidkolam as $data)
+                                            <option selected value="{{ $data->id_kolam }}">{{ $data->id_kolam }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="mb-3 mr-3">
+                                    <label for="exampleInputEmail1" class="form-label">Id Hapa</label><br>
+                                    <select class="form-select" name="hapa_id" aria-label="Default select example">
+                                        @foreach ($dataidhapa as $data)
+                                            <option selected value="{{ $data->id_hapa }}">{{ $data->id_hapa }}</option>
+                                        @endforeach
+                                    </select>
+                                </div> --}}
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="exampleInputEmail1" class="form-label">Data Kolleta</label>
+                                        <input type="date" name="data_kolleta" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="Priense data expire YYYY">
+                                            @error('data_kolleta')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                    </div>
+                                
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Kuantidade Ikan Inan</label>
+                                    <input type="text" name="total_ikan_F" class="form-control" id="total_ikan_F" >
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Total Ikan Tolun</label>
+                                <input type="text" name="total_ikan_tolun" class="form-control" id="total_ikan_tolun" >
+                            </div>    
+                            </div>
+                            {{-- <div class="row"> --}}
+                                
+                            {{-- <div class="mb-3 mr-3">
+                                <label for="exampleInputEmail1" class="form-label">Id Incubator</label><br>
+                                <select class="form-select" name="incubator_id" aria-label="Default select example">
+                                    @foreach ($dataidincu as $data)
+                                        <option selected value="{{ $data->id_incubator }}">{{ $data->id_incubator }}</option>
+                                    @endforeach
+                                </select>
+                            </div>  --}}
+                            {{-- </div>    --}}
+                            
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
+                            <button type="submit" class="btn btn-primary">Submete</button>
+                        </div>
+                    </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

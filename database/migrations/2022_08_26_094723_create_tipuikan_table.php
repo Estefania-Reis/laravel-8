@@ -15,6 +15,9 @@ class CreateTipuikanTable extends Migration
     {
         Schema::create('tipuikan', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_tipuikan');
             $table->string('naran'); 
             $table->timestamps();  
         });

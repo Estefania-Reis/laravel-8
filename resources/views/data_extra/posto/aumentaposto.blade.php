@@ -3,36 +3,59 @@
 @section('content')
 
 <body>
-<br>
-<br>
-    <h1 class="text-center mb-5 mt-5">Adisiona Dadus</h1>
+    <div class="content-wrapper mt-5">
 
     <div class="container mb-5">
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size:20px">
+                            <strong>Adisiona Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/insertdataposto" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Posto</label>
+                            <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                    @foreach ($dataseries as $data)
+                                        <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Municipio</label><br>
+                                <select class="form-select" name="municipio_id" aria-label="Default select example">
+                                    @foreach ($datamunicipio as $data)
+                                        <option selected value="{{ $data->id }}">{{ $data->naran }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputEmail1" class="form-label">Posto Administrativo</label>
                                 <input type="text" name="naran" class="form-control" id="exampleInputEmail1"
                                     aria-describedby="emailHelp">
                                     @error('naran')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                     @enderror
                             </div>
-                            
-
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 
 

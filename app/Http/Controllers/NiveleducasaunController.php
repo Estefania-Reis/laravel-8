@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Niveleducasaun;
+use App\Models\Serie;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class NiveleducasaunController extends Controller
 {
@@ -25,7 +27,8 @@ class NiveleducasaunController extends Controller
      */
     public function create()
     {
-        return view('data_extra/niv_ed/aumentanivel');
+        $dataseries = Serie::all();
+        return view('data_extra/niv_ed/aumentanivel', compact('dataseries'));
     }
 
     /**
@@ -37,7 +40,8 @@ class NiveleducasaunController extends Controller
     public function store(Request $request)
     {
         Niveleducasaun::create($request->all());
-        return Redirect()->route('index');
+        $dataseries = Serie::all();
+        return redirect()->route('index', compact('dataseries'))->with('success','Dadus Konsegue Submete Ho Susesu!');
     }
 
     /**
@@ -46,11 +50,9 @@ class NiveleducasaunController extends Controller
      * @param  \App\Models\Niveleducasaun  $niveleducasaun
      * @return \Illuminate\Http\Response
      */
-    public function edit($id){
-        
-        $data = Niveleducasaun::find($id);
-        //dd($data);
-        return view('data_extra/niv_ed/edit',compact('data'));
+    public function show($id)
+    {
+        //
     }
 
     /**
@@ -59,10 +61,13 @@ class NiveleducasaunController extends Controller
      * @param  \App\Models\Niveleducasaun  $niveleducasaun
      * @return \Illuminate\Http\Response
      */
-    // public function edit(Niveleducasaun $niveleducasaun)
-    // {
-    //     //
-    // }
+    public function edit($id)
+    {
+        $data = Niveleducasaun::find($id);
+        $dataseries = Serie::all();
+        //dd($data);
+        return view('data_extra/niv_ed/edit',compact('data','dataseries'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -71,18 +76,26 @@ class NiveleducasaunController extends Controller
      * @param  \App\Models\Niveleducasaun  $niveleducasaun
      * @return \Illuminate\Http\Response
      */
-    public function updatedataniv(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $data = Niveleducasaun::find($id);
-        $data->employees()->sync($request['niveleducasaun_id']);//$game->platforms()->update($updates['platform_ids']); $game->platforms()->sync($updates['platform_ids']);
-
-        if(session('halaman_url')){
-            return Redirect(session('halaman_url'))->with('success',' Dadus Update ho Sucesso!');
-            
-        }
-
-        return redirect()->route('index')->with('success',' Dadus Update ho Sucesso!');
-
+        $data->series_id = $request->input('series_id');
+        $data->naran = $request->input('naran');
+        $data->update();
+        return redirect()->route('index')->with('success','Dadus Konsegue Retifika!');
     }
+    // public function updatedataniv(Request $request, $id){
+    //     $data = Niveleducasaun::find($id);
+    //     $data->employees()->sync($request['niveleducasaun_id']);//$game->platforms()->update($updates['platform_ids']); $game->platforms()->sync($updates['platform_ids']);
+
+    //     if(session('halaman_url')){
+    //         return Redirect(session('halaman_url'))->with('success',' Dadus Update ho Sucesso!');
+            
+    //     }
+
+    //     return redirect()->route('index')->with('success',' Dadus Update ho Sucesso!');
+
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -95,6 +108,14 @@ class NiveleducasaunController extends Controller
         $data->delete();
         return redirect()->route('index')->with('success',' Dadus Konsege Hamos Ona!');
     }
+    public function exportpdf(){
+        $data = Niveleducasaun::all();
 
-
+        view()->share('data', $data);
+        $pdf = PDF::loadview('data_extra.niv_ed.nivEd-pdf', $data->toArray())->setPaper('a4')->setWarnings(false)->output();
+        return response()->streamDownload(
+            fn () => print($pdf),
+            "Nivel-Edukasaun.pdf"
+        );
+    }
 }

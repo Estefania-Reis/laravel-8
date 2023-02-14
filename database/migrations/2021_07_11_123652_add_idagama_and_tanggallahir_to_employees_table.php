@@ -14,7 +14,7 @@ class AddIdagamaAndTanggallahirToEmployeesTable extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->integer('id_religions')->nullable();
+            $table->string('id_religions')->nullable();
             
         });
     }

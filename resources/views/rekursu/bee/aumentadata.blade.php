@@ -1,36 +1,108 @@
 @extends('layout.admin')
-@push('css')
-      {{-- selectpicker from bpootstrap 4 --}}
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
- integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-@endpush
+
 @section('content')
 
 <body>
-<br>
-    <h1 class="text-center mb-3 mt-5">Adisiona Dadus</h1>
+    <div class="content-wrapper mt-5">
+{{-- <div class="col-auto">
+    <a href="/rekursu/bee/index" class="btn btn-info"><i class="nav-icon fas fa-arrow-circle-left"></i> Kualidade Be'e</a>
+</div> --}}
     <div class="container mb-5">
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size: 20px">
+                            <strong>Adisiona Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/insertdatabee" method="POST" enctype="multipart/form-data">
                             @csrf 
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Orijem Bee</label>
-                                <input type="text" name="orijem_bee" class="form-control" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp">
-                                    @error('orijem_bee')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>    
-                            <button type="submit" class="btn btn-primary">Submete</button>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $data)
+                                            <option selected value="{{ $data->id }}">{{ $data->series }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Data</label>
+                                    <input type="date" name="data" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Id Kolam</label><br>
+                                    <select class="form-select" name="kolam_id" aria-label="Default select example">
+                                        @foreach ($datakolam as $data)
+                                            <option selected value="{{ $data->id_kolam }}">{{ $data->id_kolam }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Estatus Bee Dalan Tama</label>
+                                    <input type="text" name="status_bee_dalan_tama" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Estatus Bee Dalan Sai</label>
+                                    <input type="text" name="status_bee_dalan_sai" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Razaun</label>
+                                    <input type="text" name="razaun" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                            </div>  
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">PH</label>
+                                    <input type="text" name="ph" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Temperatura</label>
+                                    <input type="text" name="temperatura" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">DO</label>
+                                    <input type="text" name="do" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                            </div>  
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">SD</label>
+                                    <input type="text" name="sd" class="form-control" 
+                                        aria-describedby="emailHelp">
+                                </div>
+                                <div class="mb-3 mr-3">
+                                    <label for="exampleInputEmail1" class="form-label">Orijem Bee</label><br>
+                                    <select class="form-select" name="orijem_bee" aria-label="Default select example">
+                                        {{-- <option selected>Hili Jerasaun</option> --}}
+                                        <option selected value="bee moris">bee moris</option>
+                                        <option value="pump">pump</option>
+                                    </select>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
+                            <button type="submit" class="btn btn-info">Submete</button>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

@@ -15,13 +15,18 @@ class CreateHahanikanTable extends Migration
     {
         Schema::create('hahanikan', function (Blueprint $table) {
             $table->id();
+            $table->integer('numeru');
+            $table->foreignId('series_id');
+            $table->string('id_hahanikan');
             $table->string('naran');
             $table->string('unidade');
-            $table->integer('kuantidade');
-            $table->float('presu');
+            $table->integer('total_saka');
+            $table->integer('pezu_saka');
+            $table->float('presu_saka');
             $table->float('total_presu');
-            $table->date('data');
-            $table->date('data_hahan_expire');
+            $table->enum('tipu_ikan',['ikan brood','ikan srt','ikan nursery', 'ikan nursery none mono sex']);
+            $table->date('data_import');
+            $table->date('data_expire');
             $table->timestamps();
         });
         Schema::rename('hahanikan', 'hahanikans');

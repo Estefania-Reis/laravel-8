@@ -3,34 +3,113 @@
 @section('content')
 
 <body>
-    <h1 class="text-center mb-4">Edit Dadus</h1>
+    <div class="content-wrapper mt-5">
 
     <div class="container">
 
         <div class="row justify-content-center">
             <div class="col-8">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="vertical-center" style="font-size: 20px">
+                            <strong>Hadia Dadus</strong>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form action="/updatedatabee/{{ $data->id }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Orijem Bee</label>
-                                <input type="text" name="orijem_bee" class="form-control" id="orijem_bee"
-                                    aria-describedby="emailHelp" value="{{ $data->orijem_bee }}">
-                                    @error('orijem_bee')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                            </div>     
-                            <button type="submit" class="btn btn-primary">Submete</button>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Series/Kode</label><br>
+                                    <select class="form-select" name="series_id" id="series_id" aria-label="Default select example">
+                                        @foreach ($dataseries as $datas)
+                                        @if (old('series_id', $data->series_id) == $datas->id)
+                                        <option selected value="{{ $datas->id }}">{{ $datas->series }}</option>
+                                        @else
+                                        <option value="{{ $datas->id }}">{{ $datas->series }}</option> 
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Data</label>
+                                    <input type="text" name="data" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ date('j-n-Y', strtotime($data->data)) }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Id Kolam</label><br>
+                                    <select class="form-select" name="kolam_id" aria-label="Default select example">
+                                        @foreach ($datakolam as $datak)
+                                        @if (old('kolam_id', $data->kolam_id) == $datak->id_kolam)
+                                        <option selected value="{{ $datak->id_kolam }}">{{ $datak->id_kolam }}</option>
+                                        @else
+                                        <option value="{{ $datak->id_kolam }}">{{ $datak->id_kolam }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Estatus Bee Dalan Tama</label>
+                                    <input type="text" name="status_bee_dalan_tama" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->status_bee_dalan_tama }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Estatus Bee Dalan Sai</label>
+                                    <input type="text" name="status_bee_dalan_sai" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->status_bee_dalan_sai }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Razaun</label>
+                                    <input type="text" name="razaun" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->razaun }}">
+                                </div>
+                            </div>  
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">PH</label>
+                                    <input type="text" name="ph" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->ph }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">Temperatura</label>
+                                    <input type="text" name="temperatura" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->temperatura }}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">DO</label>
+                                    <input type="text" name="do" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->do }}">
+                                </div>
+                            </div>  
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputEmail1" class="form-label">SD</label>
+                                    <input type="text" name="sd" class="form-control" 
+                                        aria-describedby="emailHelp" value="{{ $data->sd }}">
+                                </div>
+                                <div class="mb-3 mr-3">
+                                    <label for="exampleInputEmail1" class="form-label">Orijem Bee</label><br>
+                                    <select class="form-select" name="orijem_bee" aria-label="Default select example">
+                                        <option selected value="{{ $data->orijem_bee }}">{{ $data->orijem_bee }}</option>
+                                        <option value="bee moris">bee moris</option>
+                                        <option value="pump">pump</option>
+                                    </select>
+                                </div>
+                            </div> 
+                    </div>
+                    <div class="card-footer">
+                        <div class="vertical-center">
+                            <button type="submit" class="btn btn-info">Submete</button>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
+</div>
 
     <!-- Optional JavaScript; choose one of the two! -->
 

@@ -1,48 +1,41 @@
 @extends('layout.admin')
-@push('css')
-      <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        {{-- selectpicker from bpootstrap 4 --}}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-@endpush
 @section('content')
 <br>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
-        <a href="/manutensaun/troka_bee/kolam/aumentadata" class="btn btn-success">Adisiona +</a>
+        
+        
         {{-- {{ Session::get('halaman_url') }} --}}
         <div class="row g-3 align-items-center mt-2">
-            <div class="col-auto">
-                <form action="/pegawai" method="GET">
-                    <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline">
-                </form>
-            </div>
-
-            <div class="col-auto">
-                <a href="/exportpdf" class="btn btn-info">Export PDF</a>
-            </div>
-            <div class="col-auto">
+            @can('tadmin')
+        <div class="col-auto ml-3">
+            <a href="/manutensaun/troka_bee/kolam/aumentadata" class="btn btn-info">Adisiona +</a>
+        </div>
+        @endcan
+        
+        <div class="col-auto">
+            <a href="/exportpdf" class="btn btn-info">Export PDF</a>
+        </div>
+        <div class="col">
                 <a href="/exportexcel" class="btn btn-success">Export Excel</a>
             </div>
-
-            <div class="col-auto">
+            
+            {{-- <div class="col-auto">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Import Data
                 </button>
+            </div> --}}
+            <div class="col-auto mr-4">
+                <form action="/pegawai" method="GET">
+                    <input type="search" id="inputPassword6" name="search" class="form-control"
+                        aria-describedby="passwordHelpInline" placeholder="search">
+                </form>
             </div>
-
+            
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -74,7 +67,7 @@
                 {{ $message }}
             </div>
             @endif --}}
-            <table class="table table-responsive-sm a">
+            <table class="table table-responsive-sm">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -83,7 +76,9 @@
                         <th scope="col">Id Incubator</th>
                         <th scope="col">Oras Troka Bee</th>
                         <th scope="col">Data Troka Bee</th>
+                        @can('tadmin')
                         <th scope="col">Asaun</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -97,15 +92,15 @@
                         <td>{{ $row->incubator_id }}</td>
                         <td>{{ $row->oras_tb->format('H:i') }}</td>
                         <td>{{ $row->data_tb->format('j-n-Y') }}</td>
+                        @can('tadmin')
                         <td>
-                            <a href="/manutensaun/troka_bee/kolam/edit/{{ $row->id }}" class="btn btn-info fa fa-edit"></a>
-                            <a href="#" class="btn btn-danger delete d-inline" data-id="{{ $row->id }}">
-                                <i class="material-icons d-inline" style="font-size:18px">delete</i></a>
+                            <a href="/manutensaun/troka_bee/kolam/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}">
+                                <i class="material-icons" style="font-size:18px">delete</i></a>
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
-
-
                 </tbody>
             </table>
             {{ $data->links() }}
