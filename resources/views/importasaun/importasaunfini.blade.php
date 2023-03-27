@@ -10,12 +10,15 @@
 
 @endpush
 @section('content')
-<div class="content-wrapper">
+<div class="wrapper vertical-center" >
     <!-- Content Header (Page header) -->
 
-    <div class="container m-2 ">
+    <div class="container m-1">
         {{-- {{ Session::get('halaman_url') }} --}}
-        <div class="row g-3 align-items-center mt-2">
+        
+        <div class="card mt-5 mb-5">
+        <div class="card-header">
+        <div class="row g-3 align-items-center">
             @can('tadmin')
             <div class="col-auto ml-3">
                 <a href="/aumenta_importasaun_fini" class="btn btn-info">Adisiona +</a>
@@ -30,7 +33,7 @@
             <div class="col-auto mr-4">
                 <form action="/importasaun_fini" method="GET">
                     <input type="search" id="inputPassword6" name="search" class="form-control"
-                        aria-describedby="passwordHelpInline" placeholder="peskiza bazeia ba nasaun">
+                        aria-describedby="passwordHelpInline" placeholder="naran nasaun">
                 </form>
             </div>
             
@@ -66,6 +69,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="card-body" style="min-height:375px">
         <div class="row m-2">
             {{-- @if ($message = Session::get('success'))
             <div class="alert alert-success" role="alert">
@@ -116,7 +122,8 @@
             {{ $data->links() }}
         </div>
     </div>
-
+    </div>
+</div>
 </div>
 
 </body>

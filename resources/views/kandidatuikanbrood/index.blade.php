@@ -9,7 +9,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
-<div class="content-wrapper">
+<div class="wrapper">
     <!-- Content Header (Page header) -->
     <div class="container m-2 ">
         

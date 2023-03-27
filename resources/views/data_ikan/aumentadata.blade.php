@@ -2,7 +2,7 @@
 
 @section('content')
 <body>
-    <div class="content-wrapper mt-5">
+    <div class="wrapper mt-5">
         {{-- <div class="col-auto">
             <a href="../../data_ikan/index" class="btn btn-info"><i class="nav-icon fas fa-arrow-circle-left"></i> Ikan (Brood)</a>
         </div> --}}

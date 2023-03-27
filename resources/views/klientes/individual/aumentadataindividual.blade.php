@@ -2,7 +2,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
 <body>
-<div class="content-wrapper">
+<div class="wrapper">
     {{-- <h1 class="text-center m-2">Adisiona Dadus</h1> --}}
     <div class="container mb-2 mt-5">
         <div class="row justify-content-center">

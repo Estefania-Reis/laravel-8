@@ -9,7 +9,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 @section('content')
-<div class="content-wrapper">
+<div class="wrapper">
     <!-- Content Header (Page header) -->
 
     <div class="container m-2 ">
@@ -106,7 +106,7 @@
                         <td>{{ $row->naran }}</td>
                         <td>
                             
-                            <a href="/data_extra/niv_ed/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
+                            <a href="/data_extra/aldeia/edit/{{ $row->id }}" class="btn1 btn-info fa fa-edit" style="font-size:14px"></a>
                             <a href="#" class="btn1 btn-danger delete" data-id="{{ $row->id }}"
                                 data-naran="{{ $row->naran }}"><i class="material-icons d-inline" style="font-size:18px">delete</i></a>
                         </td> 

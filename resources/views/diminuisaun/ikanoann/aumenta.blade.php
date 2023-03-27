@@ -2,6 +2,7 @@
 
 @section('content')
 <body>
+    <div class="wrapper">
 <br><br><br>
    
     <div class="container mb-5">
@@ -85,6 +86,7 @@
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

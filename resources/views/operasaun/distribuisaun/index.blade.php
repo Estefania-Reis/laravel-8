@@ -10,7 +10,7 @@
 @endpush
 @section('content')
 
-<div class="content-wrapper">
+<div class="wrapper">
     <!-- Content Header (Page header) -->
     <div class="container m-2 "><br>
         

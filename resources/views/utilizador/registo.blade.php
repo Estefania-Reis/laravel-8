@@ -7,7 +7,7 @@
 @section('content')
 
 <body>
-  <div class="content-wrapper">
+  <div class="wrapper">
     
     <div class="container mb-5"><br>
         <div class="row justify-content-center">

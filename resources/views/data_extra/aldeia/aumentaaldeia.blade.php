@@ -1,10 +1,11 @@
 @extends('../layout.admin')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
+
 @section('content')
 
 <body>
-    <div class="content-wrapper mt-5">
-    <div class="container mb-5">
+    <div class="wrapper">
+    <div class="container mt-4 mb-3">
 
         <div class="row justify-content-center">
             <div class="col-8">
@@ -14,7 +15,7 @@
                             <strong>Adisiona Dadus</strong>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="min-height:375px">
                         <form action="/insertdataaldeia" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-row">
@@ -71,7 +72,7 @@
         </div>
     </div>
 </div>
-
+</body>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -132,6 +133,11 @@
 
         })
     </script>
-</body>
+<script>
+    @if (Session:: has('success'))
+    toastr.success("{{ Session::get('success') }}")
+    @endif
+    
+    </script>
 
 @endsection

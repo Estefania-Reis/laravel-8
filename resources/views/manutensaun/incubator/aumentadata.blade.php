@@ -3,7 +3,7 @@
 @section('content')
 
 <body>
-    <div class="content-wrapper">
+    <div class="wrapper">
     <h1 class="text-center mb-3 mt-2">Adisiona Dadus</h1>
     <div class="container mb-2">
         <div class="row justify-content-center">

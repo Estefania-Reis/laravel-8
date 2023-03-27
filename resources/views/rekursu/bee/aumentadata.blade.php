@@ -3,7 +3,7 @@
 @section('content')
 
 <body>
-    <div class="content-wrapper mt-5">
+    <div class="wrapper mt-5">
 {{-- <div class="col-auto">
     <a href="/rekursu/bee/index" class="btn btn-info"><i class="nav-icon fas fa-arrow-circle-left"></i> Kualidade Be'e</a>
 </div> --}}

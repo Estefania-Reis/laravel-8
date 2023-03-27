@@ -1,7 +1,7 @@
 @extends('layout.admin')
 @section('content')
 <body>
-    <div class="content-wrapper mt-5">
+    <div class="wrapper mt-5">
     <div class="container mb-5">
         <div class="row justify-content-center">
             <div class="col-8">

@@ -7,6 +7,7 @@
 @section('content')
 
 <body>
+    <div class="wrapper">
 <br>
     <h1 class="text-center mb-3 mt-5">Adisiona Dadus</h1>
     <div class="container mb-5">
@@ -58,6 +59,7 @@
             </div>
         </div>
     </div>
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

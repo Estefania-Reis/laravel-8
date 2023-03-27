@@ -2,6 +2,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
 <body>
+    <div class="wrapper">
 <br>
     <h2 class="text-center mb-5 mt-5" style="color:aquamarine"><strong>Adisiona Dadus Ikan</strong></h2>
     <div class="container mb-5">
@@ -84,7 +85,7 @@
             </div>
         </div>
     </div>  
-
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

@@ -3,8 +3,8 @@
 @section('content')
 <body>
   
-  <div class="content-wrapper">
-    <div class="container ml-3 ">
+  <div class="wrapper">
+    <div class="container">
       <!-- Content Header (Page header) -->
       <div class="vertical-center mt-2">
         <div class="h3">Dadus Estatistiku Pescas e Aquicultura</div>

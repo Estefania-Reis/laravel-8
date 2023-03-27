@@ -3,6 +3,7 @@
 @section('content')
 
 <body>
+    <div class="wrapper">
     <h1 class="text-center mb-4">Edit Dadus</h1>
 
     <div class="container">
@@ -76,10 +77,7 @@
             </div>
         </div>
     </div>
-
-
-
-
+</div>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

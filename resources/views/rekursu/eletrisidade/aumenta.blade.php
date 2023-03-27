@@ -3,7 +3,7 @@
 @section('content')
 <body>
 <br>
-    <div class="content-wrapper mt-5">   
+    <div class="wrapper mt-5">   
     <div class="container m-2">
         {{-- <div class="col-auto">
             <a href="/eletrisidade/index" class="btn btn-info"><i class="nav-icon fas fa-arrow-circle-left"></i> Eletrisidade</a>

@@ -3,6 +3,7 @@
 @section('content')
 
 <body>
+    <div class="wrapper">
     <h1 class="text-center mb-4">Hadia Dadus</h1>
 
     <div class="container">
@@ -203,7 +204,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
 
 

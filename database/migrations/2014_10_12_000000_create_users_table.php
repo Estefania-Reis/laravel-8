@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_admin')->default(false);
             $table->boolean('is_xefe')->default(false);
             $table->boolean('is_responsavel')->default(false);
-            $table->boolean('is_tadmin')->default(false);
+            $table->boolean('is_tadmin')->default(true);
         });
     }
 
